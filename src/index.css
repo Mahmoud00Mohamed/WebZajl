@@ -41,7 +41,7 @@ html[dir="rtl"] body {
   }
 
   .btn {
-    @apply px-4 py-2 rounded-md transition-all duration-200 font-normal tracking-wide;
+    @apply px-4 py-2 rounded-md transition-all duration-200 font-normal tracking-wide min-w-[48px] min-h-[48px];
   }
 
   .btn-primary {
@@ -385,6 +385,12 @@ html[dir="rtl"] .snap-center {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 2px;
   }
+
+  /* Disable hover effects on touch devices */
+  .group:hover,
+  [class*="hover:"] {
+    all: revert;
+  }
 }
 
 /* Focus styles */
@@ -529,7 +535,8 @@ img {
 
 /* Enhanced placeholder animation */
 @keyframes placeholderPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.6;
     transform: scale(1);
   }
