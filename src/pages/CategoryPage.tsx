@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
@@ -20,17 +21,6 @@ const CategoryPage: React.FC = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 1000]);
-
-  // Preload visible product images
-  const visibleProducts = React.useMemo(
-    () => sortedProducts.slice(0, 12),
-    [sortedProducts]
-  );
-  const productImages = React.useMemo(
-    () => visibleProducts.map((product) => product.imageUrl),
-    [visibleProducts]
-  );
-  useImagePreloader(productImages, { priority: false });
 
   const filteredCategories = slug
     ? categories.filter((category) => category.id === slug)
@@ -65,6 +55,17 @@ const CategoryPage: React.FC = () => {
         return b.isBestSeller ? 1 : -1;
     }
   });
+
+  // Preload visible product images
+  const visibleProducts = React.useMemo(
+    () => sortedProducts.slice(0, 12),
+    [sortedProducts]
+  );
+  const productImages = React.useMemo(
+    () => visibleProducts.map((product) => product.imageUrl),
+    [visibleProducts]
+  );
+  useImagePreloader(productImages, { priority: false });
 
   if (slug && filteredCategories.length === 0) {
     return (
@@ -410,8 +411,6 @@ const CategoryPage: React.FC = () => {
                         priority={index < 4}
                         showZoom={false}
                         placeholderSize={24}
-                        fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=200"
-                        placeholderSize={32}
                         fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                       />
                     </div>

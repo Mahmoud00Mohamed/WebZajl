@@ -48,13 +48,6 @@ const FavoritesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-  // Preload favorite images
-  const favoriteImages = React.useMemo(
-    () => filteredFavorites.slice(0, 12).map((item) => item.imageUrl),
-    [filteredFavorites]
-  );
-  useImagePreloader(favoriteImages, { priority: false });
-
   // تصفية وترتيب المفضلة
   const filteredFavorites = favorites
     .filter((item) => {
@@ -91,6 +84,13 @@ const FavoritesPage: React.FC = () => {
           );
       }
     });
+
+  // Preload favorite images
+  const favoriteImages = React.useMemo(
+    () => filteredFavorites.slice(0, 12).map((item) => item.imageUrl),
+    [filteredFavorites]
+  );
+  useImagePreloader(favoriteImages, { priority: false });
 
   const handleAddToCart = (product: FavoriteItem) => {
     try {
@@ -303,8 +303,6 @@ const FavoritesPage: React.FC = () => {
                         priority={index < 6}
                         showZoom={false}
                         placeholderSize={24}
-                        fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=200"
-                        placeholderSize={32}
                         fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                       />
                       <div className="absolute top-2 right-2 rtl:left-2 rtl:right-auto opacity-0 group-hover:opacity-100 transition-opacity">
@@ -786,8 +784,6 @@ const FavoritesPage: React.FC = () => {
                           quality={75}
                           priority={false}
                           showZoom={false}
-                          placeholderSize={20}
-                          fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                           placeholderSize={20}
                           fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                         />

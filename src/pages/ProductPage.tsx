@@ -33,7 +33,10 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, getProductById } from "../data";
 import ProductImage from "../components/ui/ProductImage";
-import { usePreloadCriticalImages } from "../hooks/useImagePreloader";
+import {
+  usePreloadCriticalImages,
+  useImagePreloader,
+} from "../hooks/useImagePreloader";
 import FavoriteButton from "../components/ui/FavoriteButton";
 import AddToCartButton from "../components/ui/AddToCartButton";
 
@@ -49,6 +52,37 @@ const ProductPage: React.FC = () => {
   const [showImageZoomModal, setShowImageZoomModal] = useState(false);
 
   const product = getProductById(parseInt(id || "0"));
+
+  // Mock images for gallery
+  const productImages = [
+    product?.imageUrl || "",
+    product?.imageUrl || "",
+    product?.imageUrl || "",
+    product?.imageUrl || "",
+  ].filter(Boolean);
+
+  // Preload product images immediately
+  usePreloadCriticalImages(productImages);
+
+  const relatedProducts = React.useMemo(() => {
+    if (!product) return [];
+
+    return allProducts
+      .filter(
+        (p) =>
+          p.id !== product.id &&
+          (p.categoryId === product.categoryId ||
+            p.occasionId === product.occasionId)
+      )
+      .slice(0, 8);
+  }, [product]);
+
+  // Preload related product images
+  const relatedImages = React.useMemo(
+    () => relatedProducts.slice(0, 6).map((p) => p.imageUrl),
+    [relatedProducts]
+  );
+  useImagePreloader(relatedImages, { priority: false });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -100,33 +134,6 @@ const ProductPage: React.FC = () => {
       </div>
     );
   }
-
-  const relatedProducts = allProducts
-    .filter(
-      (p) =>
-        p.id !== product.id &&
-        (p.categoryId === product.categoryId ||
-          p.occasionId === product.occasionId)
-    )
-    .slice(0, 8);
-
-  // Mock images for gallery
-  const productImages = [
-    product.imageUrl,
-    product.imageUrl,
-    product.imageUrl,
-    product.imageUrl,
-  ];
-
-  // Preload product images immediately
-  usePreloadCriticalImages(productImages);
-
-  // Preload related product images
-  const relatedImages = React.useMemo(
-    () => relatedProducts.slice(0, 6).map((p) => p.imageUrl),
-    [relatedProducts]
-  );
-  useImagePreloader(relatedImages, { priority: false });
 
   const features = [
     {
@@ -477,8 +484,6 @@ const ProductPage: React.FC = () => {
                   quantity={quantity}
                   size="md"
                   className="flex-1 h-10 text-sm font-semibold"
-                  placeholderSize={60}
-                  fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=800"
                 />
                 <button className="h-10 px-5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all font-semibold flex items-center justify-center gap-1.5 text-sm">
                   <ShoppingCart size={16} />
@@ -544,8 +549,6 @@ const ProductPage: React.FC = () => {
                       <motion.div
                         layoutId="activeTab"
                         className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                        placeholderSize={16}
-                        fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=200"
                       />
                     )}
                   </button>

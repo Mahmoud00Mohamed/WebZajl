@@ -233,9 +233,6 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
             className="absolute inset-0 w-full h-full object-cover"
             loading={priority ? "eager" : "lazy"}
             decoding="async"
-            style={{
-              imageRendering: "high-quality",
-            }}
           />
         )}
       </AnimatePresence>
