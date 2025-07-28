@@ -583,3 +583,52 @@ img {
     background: #f5f5f5;
   }
 }
+@media (hover: none) and (pointer: coarse) {
+  /* Disable hover effects for all interactive elements */
+  a:hover,
+  button:hover,
+  input:hover,
+  select:hover,
+  textarea:hover,
+  [data-hover]:hover {
+    @apply no-underline; /* Remove underline if any */
+    /* Reset any other hover-specific styles */
+    transform: none !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    border-color: inherit !important;
+    /* Add more specific resets as needed for your components */
+  }
+
+  /* Specifically target cards if they have hover effects defined with Tailwind's hover variant */
+  .card:hover {
+    @apply shadow-md; /* Revert to default shadow or remove it if not needed */
+  }
+
+  /* Reset any transformations or transitions on hover */
+  .transition-colors:hover,
+  .transition-transform:hover,
+  .transition-all:hover {
+    transition: none !important;
+  }
+
+  /* Force active state for immediate feedback on tap */
+  a:active,
+  button:active,
+  [data-interactive]:active {
+    /* Apply styles that would normally be on hover, but make them immediate on touch */
+    transform: scale(0.98);
+    opacity: 0.8;
+    /* This can be customized for a subtle press effect */
+  }
+
+  /* Remove any pseudo-elements' hover effects if they exist */
+  *[class*="group"]:hover *,
+  *[class*="hover"]:hover * {
+    /* Disable child element changes due to parent hover */
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
