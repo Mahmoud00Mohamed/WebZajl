@@ -364,13 +364,59 @@ html[dir="rtl"] .snap-center {
   -webkit-overflow-scrolling: touch;
 }
 
-/* تحسين الأداء للعناصر القابلة للتمرير */
-.touch-manipulation {
-  touch-action: manipulation;
-}
-
 /* تحسين الاستجابة للمس */
+/* This media query specifically targets touch-enabled devices that do not support hover. */
 @media (hover: none) and (pointer: coarse) {
+  /* Disable hover effects */
+  a:hover,
+  button:hover,
+  input:hover,
+  select:hover,
+  .group:hover .group-hover\\:*,
+  .btn:hover {
+    filter: none !important; /* Remove any hover filters */
+    transform: none !important; /* Remove any hover transforms */
+    opacity: 1 !important; /* Ensure full opacity */
+    box-shadow: none !important; /* Remove any hover shadows */
+    background-color: transparent !important; /* Remove any background color changes */
+    color: inherit !important; /* Inherit color to avoid hover color changes */
+    text-decoration: none !important; /* Remove any hover text decoration */
+  }
+
+  /* Explicitly remove transition on hover for touch devices */
+  a,
+  button,
+  input,
+  select,
+  .btn,
+  .group {
+    transition-property: none !important;
+  }
+
+  /* Reset any specific hover states that might be causing issues */
+  .transition-colors,
+  .transition-transform,
+  .transition-all {
+    transition-property: all !important; /* Re-enable transitions for non-hover states if needed */
+    transition-duration: 0ms !important; /* But set duration to 0 for immediate changes */
+    transition-timing-function: ease-in-out !important;
+  }
+
+  /* Re-apply desired styling for active/tapped states on mobile if needed,
+     or rely on default active states. */
+  a:active,
+  button:active,
+  input:active,
+  select:active,
+  .btn:active {
+    /* Add specific active styles here if needed */
+  }
+
+  /* For elements with .group:hover, ensure nested elements don't get stuck in hover state */
+  .group * {
+    transition-property: none !important;
+  }
+
   .scrollbar-hidden {
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
