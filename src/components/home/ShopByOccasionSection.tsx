@@ -1,7 +1,7 @@
 // src/components/home/ShopByOccasionSection.tsx
 import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // تأكد من استيراد Link
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import occasions from "../../data/occasions.json";
 import ProductImage from "../ui/ProductImage";
@@ -69,6 +69,8 @@ const ShopByOccasionSection: React.FC = () => {
             }}
           >
             {occasions.map((occasion, index) => (
+              // هذا هو الجزء الأساسي: مكون <Link> يحيط بكل محتوى الكارت.
+              // هذا يضمن أن أي نقرة داخل منطقة الكارت بالكامل ستؤدي إلى الانتقال.
               <Link
                 to={`/occasion/${occasion.id}`}
                 key={occasion.id}
