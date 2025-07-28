@@ -1,4 +1,3 @@
-// ملف BottomNavigation.tsx
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
@@ -66,9 +65,16 @@ const BottomNavigation: React.FC = () => {
               key={item.id}
               to={item.path}
               className={`flex flex-col items-center justify-center flex-1 transition-colors duration-200 relative touch-manipulation ${
-                active ? "text-indigo-600" : "text-gray-600 hover:text-gray-800"
+                active
+                  ? "text-indigo-600"
+                  : "text-gray-600 hover:text-gray-800 active:text-gray-800"
               }`}
-              onTouchStart={(e) => e.currentTarget.click()}
+              onTouchStart={(e) => e.preventDefault()}
+              style={{
+                WebkitTapHighlightColor: "transparent",
+                minHeight: "60px",
+                padding: "8px 4px",
+              }}
             >
               <div className="relative">
                 <Icon size={20} />
