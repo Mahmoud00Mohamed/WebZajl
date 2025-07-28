@@ -43,22 +43,15 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Mobile menu toggle */}
           <button
-            className="md:hidden p-2 rounded-full bg-gray-100 touch-manipulation active:bg-gray-200"
+            className="md:hidden p-2 rounded-full bg-gray-100"
             onClick={toggleMenu}
-            onTouchStart={(e) => e.preventDefault()}
-            style={{ WebkitTapHighlightColor: "transparent" }}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link
-              to="/"
-              className="touch-manipulation block"
-              onTouchStart={(e) => e.preventDefault()}
-              style={{ WebkitTapHighlightColor: "transparent" }}
-            >
+            <Link to="/">
               <Logo />
             </Link>
           </div>
@@ -100,9 +93,7 @@ const Header = () => {
             {/* Notifications */}
             <Link
               to="/notifications"
-              className="hidden md:flex items-center text-gray-600 transition-colors relative group touch-manipulation active:text-gray-800"
-              onTouchStart={(e) => e.preventDefault()}
-              style={{ WebkitTapHighlightColor: "transparent" }}
+              className="hidden md:flex items-center text-gray-600 transition-colors relative group"
             >
               <Bell size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
               <span className="hidden lg:inline text-sm font-bold">
@@ -114,9 +105,7 @@ const Header = () => {
             {/* Favorites */}
             <Link
               to="/favorites"
-              className="relative hidden md:flex items-center text-gray-600 transition-colors group touch-manipulation active:text-gray-800"
-              onTouchStart={(e) => e.preventDefault()}
-              style={{ WebkitTapHighlightColor: "transparent" }}
+              className="relative hidden md:flex items-center text-gray-600 transition-colors group"
             >
               <Heart size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
               <span className="hidden lg:inline text-sm font-bold">
@@ -132,9 +121,7 @@ const Header = () => {
             {/* Packages */}
             <Link
               to="/packages"
-              className="hidden md:flex items-center text-gray-600 transition-colors group touch-manipulation active:text-gray-800"
-              onTouchStart={(e) => e.preventDefault()}
-              style={{ WebkitTapHighlightColor: "transparent" }}
+              className="hidden md:flex items-center text-gray-600 transition-colors group"
             >
               <Package size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
               <span className="hidden lg:inline text-sm font-bold">
@@ -145,9 +132,7 @@ const Header = () => {
             {/* Login */}
             <Link
               to="/login"
-              className="hidden sm:flex items-center text-gray-600 transition-colors group touch-manipulation active:text-gray-800"
-              onTouchStart={(e) => e.preventDefault()}
-              style={{ WebkitTapHighlightColor: "transparent" }}
+              className="hidden sm:flex items-center text-gray-600 transition-colors group"
             >
               <User size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
               <span className="text-sm font-bold">{t("header.login")}</span>
@@ -156,9 +141,7 @@ const Header = () => {
             {/* Cart */}
             <Link
               to="/cart"
-              className="relative text-gray-600 transition-colors group touch-manipulation active:text-gray-800"
-              onTouchStart={(e) => e.preventDefault()}
-              style={{ WebkitTapHighlightColor: "transparent" }}
+              className="relative text-gray-600 transition-colors group"
             >
               <ShoppingBasket size={22} />
               {cartCount > 0 && (
@@ -190,9 +173,7 @@ const Header = () => {
             <li className="group relative">
               <Link
                 to="/categories"
-                className="flex items-center transition-colors font-bold touch-manipulation active:text-gray-800"
-                onTouchStart={(e) => e.preventDefault()}
-                style={{ WebkitTapHighlightColor: "transparent" }}
+                className="flex items-center transition-colors font-bold"
               >
                 {t("navigation.categories")}
                 <ChevronDown
@@ -204,9 +185,7 @@ const Header = () => {
             <li className="group relative">
               <Link
                 to="/occasions"
-                className="flex items-center transition-colors font-bold touch-manipulation active:text-gray-800"
-                onTouchStart={(e) => e.preventDefault()}
-                style={{ WebkitTapHighlightColor: "transparent" }}
+                className="flex items-center transition-colors font-bold"
               >
                 {t("navigation.occasions")}
                 <ChevronDown
@@ -218,9 +197,7 @@ const Header = () => {
             <li className="group relative">
               <Link
                 to="/brands"
-                className="flex items-center transition-colors font-bold touch-manipulation active:text-gray-800"
-                onTouchStart={(e) => e.preventDefault()}
-                style={{ WebkitTapHighlightColor: "transparent" }}
+                className="flex items-center transition-colors font-bold"
               >
                 {t("navigation.brands")}
                 <ChevronDown
@@ -232,9 +209,7 @@ const Header = () => {
             <li>
               <Link
                 to="/special-gifts"
-                className="text-purple-600 transition-colors font-bold touch-manipulation active:text-purple-700"
-                onTouchStart={(e) => e.preventDefault()}
-                style={{ WebkitTapHighlightColor: "transparent" }}
+                className="text-purple-600 transition-colors font-bold"
               >
                 {t("navigation.specialGifts")}
               </Link>
@@ -242,9 +217,7 @@ const Header = () => {
             <li>
               <Link
                 to="/products"
-                className="text-gray-600 transition-colors font-bold touch-manipulation active:text-gray-800"
-                onTouchStart={(e) => e.preventDefault()}
-                style={{ WebkitTapHighlightColor: "transparent" }}
+                className="text-gray-600 transition-colors font-bold"
               >
                 {i18n.language === "ar" ? "جميع المنتجات" : "All Products"}
               </Link>
@@ -280,12 +253,7 @@ const Header = () => {
           <div className="p-4 border-b border-gray-100">
             <div className="flex items-center justify-between">
               <Logo small />
-              <button
-                onClick={toggleMenu}
-                className="touch-manipulation p-1"
-                onTouchStart={(e) => e.preventDefault()}
-                style={{ WebkitTapHighlightColor: "transparent" }}
-              >
+              <button onClick={toggleMenu}>
                 <X size={24} />
               </button>
             </div>
@@ -295,10 +263,8 @@ const Header = () => {
               <li>
                 <Link
                   to="/categories"
-                  className="block py-2 text-gray-600 transition-colors font-bold touch-manipulation active:text-gray-800"
+                  className="block py-2 text-gray-600 transition-colors font-bold"
                   onClick={() => setIsMenuOpen(false)}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   {t("navigation.categories")}
                 </Link>
@@ -306,10 +272,8 @@ const Header = () => {
               <li>
                 <Link
                   to="/occasions"
-                  className="block py-2 text-gray-600 transition-colors font-bold touch-manipulation active:text-gray-800"
+                  className="block py-2 text-gray-600 transition-colors font-bold"
                   onClick={() => setIsMenuOpen(false)}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   {t("navigation.occasions")}
                 </Link>
@@ -317,10 +281,8 @@ const Header = () => {
               <li>
                 <Link
                   to="/brands"
-                  className="block py-2 text-gray-600 transition-colors font-bold touch-manipulation active:text-gray-800"
+                  className="block py-2 text-gray-600 transition-colors font-bold"
                   onClick={() => setIsMenuOpen(false)}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   {t("navigation.brands")}
                 </Link>
@@ -328,10 +290,8 @@ const Header = () => {
               <li>
                 <Link
                   to="/special-gifts"
-                  className="block py-2 text-purple-600 font-bold touch-manipulation active:text-purple-700"
+                  className="block py-2 text-purple-600 font-bold"
                   onClick={() => setIsMenuOpen(false)}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   {t("navigation.specialGifts")}
                 </Link>
@@ -339,10 +299,8 @@ const Header = () => {
               <li>
                 <Link
                   to="/products"
-                  className="block py-2 text-gray-600 transition-colors font-bold touch-manipulation active:text-gray-800"
+                  className="block py-2 text-gray-600 transition-colors font-bold"
                   onClick={() => setIsMenuOpen(false)}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   {i18n.language === "ar" ? "جميع المنتجات" : "All Products"}
                 </Link>
@@ -350,10 +308,8 @@ const Header = () => {
               <li className="pt-4 border-t border-gray-100">
                 <Link
                   to="/notifications"
-                  className="flex items-center py-2 text-gray-600 transition-colors font-bold touch-manipulation active:text-gray-800"
+                  className="flex items-center py-2 text-gray-600 transition-colors font-bold"
                   onClick={() => setIsMenuOpen(false)}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   <Bell size={18} className="mr-2 rtl:ml-2 rtl:mr-0" />
                   {t("bottomNav.notifications")}
@@ -362,10 +318,8 @@ const Header = () => {
               <li>
                 <Link
                   to="/favorites"
-                  className="flex items-center py-2 text-gray-600 transition-colors relative font-bold touch-manipulation active:text-gray-800"
+                  className="flex items-center py-2 text-gray-600 transition-colors relative font-bold"
                   onClick={() => setIsMenuOpen(false)}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   <Heart size={18} className="mr-2 rtl:ml-2 rtl:mr-0" />
                   {t("bottomNav.favorites")}
@@ -379,10 +333,8 @@ const Header = () => {
               <li>
                 <Link
                   to="/packages"
-                  className="flex items-center py-2 text-gray-600 transition-colors font-bold touch-manipulation active:text-gray-800"
+                  className="flex items-center py-2 text-gray-600 transition-colors font-bold"
                   onClick={() => setIsMenuOpen(false)}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   <Package size={18} className="mr-2 rtl:ml-2 rtl:mr-0" />
                   {t("bottomNav.packages")}
