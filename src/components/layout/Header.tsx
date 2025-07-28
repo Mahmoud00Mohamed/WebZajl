@@ -43,7 +43,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Mobile menu toggle */}
           <button
-            className="md:hidden p-2 rounded-full bg-gray-100"
+            className="md:hidden p-2 rounded-full bg-gray-100 touch-manipulation"
             onClick={toggleMenu}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -51,7 +51,7 @@ const Header = () => {
 
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/">
+            <Link to="/" className="touch-manipulation">
               <Logo />
             </Link>
           </div>
@@ -62,7 +62,7 @@ const Header = () => {
               <input
                 type="text"
                 placeholder={t("header.search")}
-                className="w-full bg-gray-50 border border-transparent py-2 px-4 pl-10 rounded-full text-gray-800 placeholder-gray-400 outline-none transition-all duration-300 focus:border-purple-500 focus:bg-white focus:shadow-md"
+                className="w-full bg-gray-50 border border-transparent py-2 px-4 pl-10 rounded-full text-gray-800 placeholder-gray-400 outline-none transition-all duration-300 focus:border-purple-500 focus:bg-white focus:shadow-md touch-manipulation"
               />
               <div className="absolute left-3 top-1/2 -translate-y-1/2">
                 <Search size={18} className="text-gray-400" />
@@ -79,7 +79,10 @@ const Header = () => {
                 <span className="text-sm font-bold mr-1.5 rtl:ml-1.5">
                   {t("header.deliveryTo")}
                 </span>
-                <select className="text-sm border-none focus:ring-0 p-0 text-gray-800 font-bold bg-transparent">
+                <select
+                  className="text-sm border-none focus:ring-0 p-0 text-gray-800 font-bold bg-transparent touch-manipulation"
+                  onClick={(e) => e.stopPropagation()} // Prevent click propagation if it causes issues
+                >
                   <option>Riyadh</option>
                   <option>Jeddah</option>
                   <option>Dammam</option>
@@ -93,7 +96,7 @@ const Header = () => {
             {/* Notifications */}
             <Link
               to="/notifications"
-              className="hidden md:flex items-center text-gray-600 transition-colors relative group"
+              className="hidden md:flex items-center text-gray-600 transition-colors relative group touch-manipulation"
             >
               <Bell size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
               <span className="hidden lg:inline text-sm font-bold">
@@ -105,7 +108,7 @@ const Header = () => {
             {/* Favorites */}
             <Link
               to="/favorites"
-              className="relative hidden md:flex items-center text-gray-600 transition-colors group"
+              className="relative hidden md:flex items-center text-gray-600 transition-colors group touch-manipulation"
             >
               <Heart size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
               <span className="hidden lg:inline text-sm font-bold">
@@ -121,7 +124,7 @@ const Header = () => {
             {/* Packages */}
             <Link
               to="/packages"
-              className="hidden md:flex items-center text-gray-600 transition-colors group"
+              className="hidden md:flex items-center text-gray-600 transition-colors group touch-manipulation"
             >
               <Package size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
               <span className="hidden lg:inline text-sm font-bold">
@@ -132,7 +135,7 @@ const Header = () => {
             {/* Login */}
             <Link
               to="/login"
-              className="hidden sm:flex items-center text-gray-600 transition-colors group"
+              className="hidden sm:flex items-center text-gray-600 transition-colors group touch-manipulation"
             >
               <User size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
               <span className="text-sm font-bold">{t("header.login")}</span>
@@ -141,7 +144,7 @@ const Header = () => {
             {/* Cart */}
             <Link
               to="/cart"
-              className="relative text-gray-600 transition-colors group"
+              className="relative text-gray-600 transition-colors group touch-manipulation"
             >
               <ShoppingBasket size={22} />
               {cartCount > 0 && (
@@ -158,7 +161,7 @@ const Header = () => {
           <input
             type="text"
             placeholder={t("header.search")}
-            className="w-full bg-gray-50 border border-transparent py-2 px-4 pl-10 rounded-full text-gray-800 placeholder-gray-400 outline-none transition-all duration-300 focus:border-purple-500 focus:bg-white focus:shadow-md"
+            className="w-full bg-gray-50 border border-transparent py-2 px-4 pl-10 rounded-full text-gray-800 placeholder-gray-400 outline-none transition-all duration-300 focus:border-purple-500 focus:bg-white focus:shadow-md touch-manipulation"
           />
           <div className="absolute left-3 top-1/2 -translate-y-1/2">
             <Search size={18} className="text-gray-400" />
@@ -173,7 +176,7 @@ const Header = () => {
             <li className="group relative">
               <Link
                 to="/categories"
-                className="flex items-center transition-colors font-bold"
+                className="flex items-center transition-colors font-bold touch-manipulation"
               >
                 {t("navigation.categories")}
                 <ChevronDown
@@ -185,7 +188,7 @@ const Header = () => {
             <li className="group relative">
               <Link
                 to="/occasions"
-                className="flex items-center transition-colors font-bold"
+                className="flex items-center transition-colors font-bold touch-manipulation"
               >
                 {t("navigation.occasions")}
                 <ChevronDown
@@ -197,7 +200,7 @@ const Header = () => {
             <li className="group relative">
               <Link
                 to="/brands"
-                className="flex items-center transition-colors font-bold"
+                className="flex items-center transition-colors font-bold touch-manipulation"
               >
                 {t("navigation.brands")}
                 <ChevronDown
@@ -209,7 +212,7 @@ const Header = () => {
             <li>
               <Link
                 to="/special-gifts"
-                className="text-purple-600 transition-colors font-bold"
+                className="text-purple-600 transition-colors font-bold touch-manipulation"
               >
                 {t("navigation.specialGifts")}
               </Link>
@@ -217,7 +220,7 @@ const Header = () => {
             <li>
               <Link
                 to="/products"
-                className="text-gray-600 transition-colors font-bold"
+                className="text-gray-600 transition-colors font-bold touch-manipulation"
               >
                 {i18n.language === "ar" ? "جميع المنتجات" : "All Products"}
               </Link>
@@ -253,7 +256,7 @@ const Header = () => {
           <div className="p-4 border-b border-gray-100">
             <div className="flex items-center justify-between">
               <Logo small />
-              <button onClick={toggleMenu}>
+              <button onClick={toggleMenu} className="touch-manipulation">
                 <X size={24} />
               </button>
             </div>
@@ -263,7 +266,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/categories"
-                  className="block py-2 text-gray-600 transition-colors font-bold"
+                  className="block py-2 text-gray-600 transition-colors font-bold touch-manipulation"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t("navigation.categories")}
@@ -272,7 +275,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/occasions"
-                  className="block py-2 text-gray-600 transition-colors font-bold"
+                  className="block py-2 text-gray-600 transition-colors font-bold touch-manipulation"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t("navigation.occasions")}
@@ -281,7 +284,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/brands"
-                  className="block py-2 text-gray-600 transition-colors font-bold"
+                  className="block py-2 text-gray-600 transition-colors font-bold touch-manipulation"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t("navigation.brands")}
@@ -290,7 +293,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/special-gifts"
-                  className="block py-2 text-purple-600 font-bold"
+                  className="block py-2 text-purple-600 font-bold touch-manipulation"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t("navigation.specialGifts")}
@@ -299,7 +302,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/products"
-                  className="block py-2 text-gray-600 transition-colors font-bold"
+                  className="block py-2 text-gray-600 transition-colors font-bold touch-manipulation"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {i18n.language === "ar" ? "جميع المنتجات" : "All Products"}
@@ -308,7 +311,7 @@ const Header = () => {
               <li className="pt-4 border-t border-gray-100">
                 <Link
                   to="/notifications"
-                  className="flex items-center py-2 text-gray-600 transition-colors font-bold"
+                  className="flex items-center py-2 text-gray-600 transition-colors font-bold touch-manipulation"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Bell size={18} className="mr-2 rtl:ml-2 rtl:mr-0" />
@@ -318,7 +321,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/favorites"
-                  className="flex items-center py-2 text-gray-600 transition-colors relative font-bold"
+                  className="flex items-center py-2 text-gray-600 transition-colors relative font-bold touch-manipulation"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Heart size={18} className="mr-2 rtl:ml-2 rtl:mr-0" />
@@ -333,7 +336,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/packages"
-                  className="flex items-center py-2 text-gray-600 transition-colors font-bold"
+                  className="flex items-center py-2 text-gray-600 transition-colors font-bold touch-manipulation"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Package size={18} className="mr-2 rtl:ml-2 rtl:mr-0" />
