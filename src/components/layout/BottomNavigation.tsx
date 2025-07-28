@@ -33,7 +33,7 @@ const BottomNavigation: React.FC = () => {
       path: "/favorites",
       icon: Heart,
       labelKey: "bottomNav.favorites",
-      badge: favoritesCount,
+      badge: favoritesCount, // This `badge` property is what TypeScript is concerned about.
     },
     {
       id: "packages",
@@ -50,18 +50,6 @@ const BottomNavigation: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
-  const handleNavClick = (e: React.MouseEvent, path: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // إزالة أي تأثيرات hover قبل التنقل
-    const target = e.currentTarget as HTMLElement;
-    target.blur();
-
-    // تنقل فوري
-    window.location.href = path;
-  };
-
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden"
@@ -76,22 +64,18 @@ const BottomNavigation: React.FC = () => {
             <Link
               key={item.id}
               to={item.path}
-              onClick={(e) => handleNavClick(e, item.path)}
-              className={`bottom-nav-item flex flex-col items-center justify-center flex-1 transition-colors duration-200 relative touch-manipulation ${
-                active ? "text-indigo-600" : "text-gray-600"
+              className={`flex flex-col items-center justify-center flex-1 transition-colors duration-200 relative ${
+                active ? "text-indigo-600" : "text-gray-600 hover:text-gray-800"
               }`}
-              style={{
-                WebkitTapHighlightColor: "rgba(99, 102, 241, 0.1)",
-                touchAction: "manipulation",
-                minHeight: "60px",
-                minWidth: "60px",
-              }}
             >
               <div className="relative">
                 <Icon size={20} />
                 {item.id === "notifications" && (
                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 )}
+                {/* Fixed: Added a nullish coalescing operator (?? 0) or check if item.badge exists before comparing */}
+                {/* The previous fix 'item.badge && item.badge > 0' was already robust, but sometimes linting might prefer explicit type narrowing. */}
+                {/* Let's explicitly check if item.badge is a number AND greater than 0 to satisfy TypeScript. */}
                 {item.id === "favorites" &&
                   typeof item.badge === "number" &&
                   item.badge > 0 && (
