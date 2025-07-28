@@ -1,7 +1,6 @@
-// src/components/home/ShopByOccasionSection.tsx
 import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom"; // تأكد من استيراد Link
+import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import occasions from "../../data/occasions.json";
 import ProductImage from "../ui/ProductImage";
@@ -69,41 +68,41 @@ const ShopByOccasionSection: React.FC = () => {
             }}
           >
             {occasions.map((occasion, index) => (
-              // هذا هو الجزء الأساسي: مكون <Link> يحيط بكل محتوى الكارت.
-              // هذا يضمن أن أي نقرة داخل منطقة الكارت بالكامل ستؤدي إلى الانتقال.
               <Link
                 to={`/occasion/${occasion.id}`}
                 key={occasion.id}
                 className="group flex flex-col items-center flex-shrink-0 w-24 md:w-28 snap-center touch-manipulation transform transition-all duration-500 ease-out animate-fade-in"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div
-                  className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden shadow-lg p-[3px] flex items-center justify-center transition-all duration-300"
-                  style={{
-                    background:
-                      "linear-gradient(45deg, #8A2BE2, #FF69B4, #00BFFF)",
-                  }}
-                >
-                  <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                    <ProductImage
-                      src={occasion.imageUrl}
-                      alt={t(occasion.nameKey)}
-                      className="w-full h-full object-cover rounded-full"
-                      width={96}
-                      height={96}
-                      aspectRatio="square"
-                      sizes="(max-width: 768px) 80px, 96px"
-                      quality={85}
-                      priority={index < 4}
-                      showZoom={false}
-                      placeholderSize={24}
-                      fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=200"
-                    />
+                <div className="flex flex-col items-center w-full h-full">
+                  <div
+                    className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden shadow-lg p-[3px] flex items-center justify-center transition-all duration-300"
+                    style={{
+                      background:
+                        "linear-gradient(45deg, #8A2BE2, #FF69B4, #00BFFF)",
+                    }}
+                  >
+                    <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                      <ProductImage
+                        src={occasion.imageUrl}
+                        alt={t(occasion.nameKey)}
+                        className="w-full h-full object-cover rounded-full"
+                        width={96}
+                        height={96}
+                        aspectRatio="square"
+                        sizes="(max-width: 768px) 80px, 96px"
+                        quality={85}
+                        priority={index < 4}
+                        showZoom={false}
+                        placeholderSize={24}
+                        fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=200"
+                      />
+                    </div>
                   </div>
+                  <span className="text-gray-700 text-xs md:text-sm font-medium text-center mt-2 line-clamp-2 group-hover:text-indigo-600 transition-colors duration-300">
+                    {t(occasion.nameKey)}
+                  </span>
                 </div>
-                <span className="text-gray-700 text-xs md:text-sm font-medium text-center mt-2 line-clamp-2 group-hover:text-indigo-600 transition-colors duration-300">
-                  {t(occasion.nameKey)}
-                </span>
               </Link>
             ))}
           </div>
