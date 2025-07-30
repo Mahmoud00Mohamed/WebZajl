@@ -33,7 +33,7 @@ const BottomNavigation: React.FC = () => {
       path: "/favorites",
       icon: Heart,
       labelKey: "bottomNav.favorites",
-      badge: favoritesCount, // This `badge` property is what TypeScript is concerned about.
+      badge: favoritesCount,
     },
     {
       id: "packages",
@@ -64,18 +64,19 @@ const BottomNavigation: React.FC = () => {
             <Link
               key={item.id}
               to={item.path}
-              className={`flex flex-col items-center justify-center flex-1 transition-colors duration-200 relative ${
-                active ? "text-indigo-600" : "text-gray-600 hover:text-gray-800"
+              className={`flex flex-col items-center justify-center flex-1 ${
+                active ? "text-indigo-600" : "text-gray-600"
               }`}
             >
               <div className="relative">
-                <Icon size={20} />
+                <Icon
+                  size={20}
+                  fill={active ? "currentColor" : "none"}
+                  stroke="currentColor"
+                />
                 {item.id === "notifications" && (
                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 )}
-                {/* Fixed: Added a nullish coalescing operator (?? 0) or check if item.badge exists before comparing */}
-                {/* The previous fix 'item.badge && item.badge > 0' was already robust, but sometimes linting might prefer explicit type narrowing. */}
-                {/* Let's explicitly check if item.badge is a number AND greater than 0 to satisfy TypeScript. */}
                 {item.id === "favorites" &&
                   typeof item.badge === "number" &&
                   item.badge > 0 && (

@@ -80,7 +80,7 @@ export default {
         serif: ["'Playfair Display'", "Georgia", "serif"],
       },
       animation: {
-        float: "float 0s ease-in-out infinite",
+        float: "float 3s ease-in-out infinite",
       },
       keyframes: {
         float: {
