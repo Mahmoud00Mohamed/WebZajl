@@ -72,22 +72,18 @@ const ProductImage: React.FC<ProductImageProps> = ({
           onLoad={() => setImageLoaded(true)}
         />
 
-        {/* Overlay Effects - Ensure pointer-events-none so it doesn't block clicks */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {/* Overlay Effects */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Zoom Button - Increased z-index to ensure clickability */}
+        {/* Zoom Button */}
         {showZoom && imageLoaded && (
           <motion.button
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={(e) => {
-              // Added stopPropagation
-              e.stopPropagation();
-              setIsZoomed(true);
-            }}
-            className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:bg-white z-30" // Increased z-index to 30
+            onClick={() => setIsZoomed(true)}
+            className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:bg-white"
           >
             <ZoomIn size={16} className="text-gray-700" />
           </motion.button>
@@ -98,10 +94,10 @@ const ProductImage: React.FC<ProductImageProps> = ({
       <AnimatePresence>
         {isZoomed && (
           <motion.div
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
             onClick={() => setIsZoomed(false)}
           >
             <motion.div
@@ -129,7 +125,7 @@ const ProductImage: React.FC<ProductImageProps> = ({
               {/* Close Button */}
               <button
                 onClick={() => setIsZoomed(false)}
-                className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors z-50" // Ensure close button is highest z-index
+                className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
               >
                 <svg
                   width="20"
