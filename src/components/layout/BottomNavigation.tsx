@@ -53,7 +53,7 @@ const BottomNavigation: React.FC = () => {
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden"
-      style={{ height: "70px" }}
+      style={{ height: "70px", zIndex: 9999 }}
     >
       <div className="flex justify-around items-center h-full">
         {navItems.map((item) => {
@@ -64,7 +64,7 @@ const BottomNavigation: React.FC = () => {
             <Link
               key={item.id}
               to={item.path}
-              className={`flex flex-col items-center justify-center flex-1 ${
+              className={`flex flex-col items-center justify-center flex-1 z-50 ${
                 active ? "text-indigo-600" : "text-gray-600"
               }`}
             >
