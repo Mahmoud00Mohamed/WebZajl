@@ -583,17 +583,3 @@ img {
     background: #f5f5f5;
   }
 }
-/* Mobile touch optimizations */
-@media (hover: none) and (pointer: coarse) {
-  * {
-    cursor: default !important;
-  }
-
-  button,
-  a,
-  [role="button"] {
-    cursor: pointer !important;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-  }
-}
