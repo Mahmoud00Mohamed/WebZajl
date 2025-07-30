@@ -62,20 +62,18 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
         );
       }
     } catch (error) {
-      console.error("Favorite toggle error:", error);
+      console.error("خطأ في تبديل المفضلة:", error);
     }
   };
 
   return (
     <motion.button
       onClick={handleToggleFavorite}
-      className={`flex items-center justify-center transition-all duration-300 
-        ${
-          isProductFavorite
-            ? "text-red-500 hover:text-red-600"
-            : "text-gray-400 hover:text-red-500"
-        } 
-        ${className}`}
+      className={`flex items-center justify-center transition-all duration-300 ${
+        isProductFavorite
+          ? "text-red-500 hover:text-red-600"
+          : "text-gray-400 hover:text-red-500"
+      } ${className}`}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       aria-label={

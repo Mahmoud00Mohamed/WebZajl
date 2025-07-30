@@ -32,7 +32,6 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
   const { showSuccess } = useToast();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
-
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
@@ -57,6 +56,7 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     setIsAdding(true);
 
     try {
+      // Add to cart with proper structure
       addToCart({
         id: product.id,
         nameEn: product.nameEn,
@@ -66,8 +66,10 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         quantity: quantity,
       });
 
+      // Show success animation
       setJustAdded(true);
 
+      // Show toast notification
       showSuccess(
         isRtl ? "تم الإضافة للسلة" : "Added to Cart",
         isRtl
@@ -79,14 +81,16 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         }
       );
 
+      // Reset states after animation
       setTimeout(() => {
         setJustAdded(false);
         setIsAdding(false);
       }, 2000);
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      console.error("خطأ في إضافة المنتج إلى عربة التسوق:", error);
       setIsAdding(false);
 
+      // Show error message if toast context is available
       if (showSuccess) {
         showSuccess(
           isRtl ? "خطأ" : "Error",
@@ -141,7 +145,8 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     <motion.button
       onClick={handleAddToCart}
       disabled={isAdding || justAdded}
-      className={`flex items-center justify-center font-medium rounded-xl transition-all duration-300 
+      className={`
+        flex items-center justify-center font-medium rounded-xl transition-all duration-300 
         ${sizeClasses[size]} 
         ${variantClasses[variant]}
         ${justAdded ? "bg-green-500 hover:bg-green-600" : ""}
@@ -150,7 +155,8 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
             ? "cursor-not-allowed opacity-90"
             : "hover:shadow-lg"
         }
-        ${className}`}
+        ${className}
+      `}
       whileHover={!isAdding && !justAdded ? { scale: 1.05 } : {}}
       whileTap={!isAdding && !justAdded ? { scale: 0.95 } : {}}
       aria-label={
