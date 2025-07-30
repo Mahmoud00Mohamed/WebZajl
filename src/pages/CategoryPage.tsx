@@ -97,14 +97,17 @@ const CategoryPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary/5">
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent opacity-90"></div>
-        <div className="absolute inset-0">
+        {/* Added pointer-events-none to ensure these background divs don't capture clicks */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent opacity-90 pointer-events-none"></div>
+        <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
           <div className="absolute bottom-20 right-20 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="relative container-custom py-20">
+        <div className="relative container-custom py-20 z-10">
+          {" "}
+          {/* Ensure main content is above backgrounds */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -273,12 +276,16 @@ const CategoryPage: React.FC = () => {
                         showZoom={false}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 z-10">
+                        {" "}
+                        {/* Added z-10 */}
                         <h3 className="text-white font-bold text-center text-sm md:text-base drop-shadow-lg">
                           {t(category.nameKey)}
                         </h3>
                       </div>
-                      <div className="absolute top-2 right-2 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute top-2 right-2 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                        {" "}
+                        {/* Added z-10 */}
                         <Eye size={16} className="text-white" />
                       </div>
                     </div>
@@ -328,8 +335,11 @@ const CategoryPage: React.FC = () => {
                       placeholderSize={28}
                       fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto flex flex-col gap-2">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />{" "}
+                    {/* Added pointer-events-none */}
+                    <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto flex flex-col gap-2 z-10">
+                      {" "}
+                      {/* Added z-10 */}
                       {product.isBestSeller && (
                         <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1">
                           {t("home.bestSellers.bestSeller")}
@@ -341,14 +351,18 @@ const CategoryPage: React.FC = () => {
                         </div>
                       )}
                     </div>
-                    <div className="absolute top-3 right-3 rtl:left-3 rtl:right-auto flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                    <div className="absolute top-3 right-3 rtl:left-3 rtl:right-auto flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0 z-20">
+                      {" "}
+                      {/* Changed to z-20 */}
                       <FavoriteButton
                         product={product}
                         className="w-10 h-10 rounded-full backdrop-blur-sm border border-white/20 shadow-lg"
                         size={16}
                       />
                     </div>
-                    <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-20">
+                      {" "}
+                      {/* Changed to z-20 */}
                       <div className="flex gap-2">
                         <AddToCartButton
                           product={product}
@@ -437,7 +451,9 @@ const CategoryPage: React.FC = () => {
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 z-20">
+                        {" "}
+                        {/* Changed to z-20 */}
                         <FavoriteButton
                           product={product}
                           className="p-2 rounded-full bg-gray-100 hover:bg-gray-200"
