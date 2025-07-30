@@ -583,3 +583,9 @@ img {
     background: #f5f5f5;
   }
 }
+html,
+body {
+  touch-action: auto !important;
+  pointer-events: auto !important;
+  -webkit-overflow-scrolling: auto !important;
+}
