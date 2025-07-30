@@ -53,7 +53,7 @@ const BottomNavigation: React.FC = () => {
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden"
-      style={{ height: "70px", zIndex: 9999 }}
+      style={{ height: "70px" }}
     >
       <div className="flex justify-around items-center h-full">
         {navItems.map((item) => {
@@ -64,16 +64,14 @@ const BottomNavigation: React.FC = () => {
             <Link
               key={item.id}
               to={item.path}
-              className={`flex flex-col items-center justify-center flex-1 z-50 ${
+              role="button"
+              aria-label={t(item.labelKey)}
+              className={`flex flex-col items-center justify-center flex-1 relative ${
                 active ? "text-indigo-600" : "text-gray-600"
               }`}
             >
               <div className="relative">
-                <Icon
-                  size={20}
-                  fill={active ? "currentColor" : "none"}
-                  stroke="currentColor"
-                />
+                <Icon size={22} />
                 {item.id === "notifications" && (
                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 )}
@@ -85,11 +83,7 @@ const BottomNavigation: React.FC = () => {
                     </span>
                   )}
               </div>
-              <span
-                className={`text-xs mt-1 font-medium truncate ${
-                  active ? "text-indigo-600" : "text-gray-600"
-                }`}
-              >
+              <span className="text-xs mt-1 font-medium truncate">
                 {t(item.labelKey)}
               </span>
             </Link>
