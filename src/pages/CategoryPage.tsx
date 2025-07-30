@@ -6,8 +6,8 @@ import { Search, Filter, Grid, List, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import categories from "../data/categories.json";
 import { allProducts, getProductsByCategory } from "../data";
-// import FavoriteButton from "../components/ui/FavoriteButton";
-// import AddToCartButton from "../components/ui/AddToCartButton";
+import FavoriteButton from "../components/ui/FavoriteButton";
+import AddToCartButton from "../components/ui/AddToCartButton";
 import ProductImage from "../components/ui/ProductImage";
 import { useImagePreloader } from "../hooks/useImagePreloader";
 
@@ -341,9 +341,22 @@ const CategoryPage: React.FC = () => {
                         </div>
                       )}
                     </div>
-                    <div className="absolute top-3 right-3 rtl:left-3 rtl:right-auto flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0"></div>
+                    <div className="absolute top-3 right-3 rtl:left-3 rtl:right-auto flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                      <FavoriteButton
+                        product={product}
+                        className="w-10 h-10 rounded-full backdrop-blur-sm border border-white/20 shadow-lg"
+                        size={16}
+                      />
+                    </div>
                     <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                       <div className="flex gap-2">
+                        <AddToCartButton
+                          product={product}
+                          variant="primary"
+                          size="sm"
+                          className="flex-1"
+                          showLabel={false}
+                        />
                         <Link
                           to={`/product/${product.id}`}
                           className="bg-white/90 backdrop-blur-sm text-gray-800 py-2 px-4 rounded-xl font-medium text-center hover:bg-white transition-all duration-300 shadow-lg"
@@ -424,7 +437,19 @@ const CategoryPage: React.FC = () => {
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2"></div>
+                      <div className="flex items-center gap-2">
+                        <FavoriteButton
+                          product={product}
+                          className="p-2 rounded-full bg-gray-100 hover:bg-gray-200"
+                          size={18}
+                        />
+                        <AddToCartButton
+                          product={product}
+                          variant="primary"
+                          size="sm"
+                          showLabel={false}
+                        />
+                      </div>
                     </div>
                   </div>
                 </motion.div>
