@@ -10,12 +10,7 @@ const BottomNavigation: React.FC = () => {
   const { favoritesCount } = useFavorites();
 
   const navItems = [
-    {
-      id: "home",
-      path: "/",
-      icon: Home,
-      labelKey: "bottomNav.home",
-    },
+    { id: "home", path: "/", icon: Home, labelKey: "bottomNav.home" },
     {
       id: "categories",
       path: "/categories",
@@ -44,10 +39,7 @@ const BottomNavigation: React.FC = () => {
   ];
 
   const isActive = (path: string) => {
-    if (path === "/") {
-      return location.pathname === "/";
-    }
-    return location.pathname.startsWith(path);
+    return location.pathname === path || location.pathname.startsWith(path);
   };
 
   return (
@@ -69,20 +61,19 @@ const BottomNavigation: React.FC = () => {
               className={`flex flex-col items-center justify-center flex-1 relative ${
                 active ? "text-indigo-600" : "text-gray-600"
               }`}
+              style={{ height: "100%", textAlign: "center" }}
             >
-              <div className="relative">
-                <Icon size={22} />
-                {item.id === "notifications" && (
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              <Icon size={22} />
+              {item.id === "notifications" && (
+                <span className="absolute top-2 right-4 w-2 h-2 bg-red-500 rounded-full"></span>
+              )}
+              {item.id === "favorites" &&
+                typeof item.badge === "number" &&
+                item.badge > 0 && (
+                  <span className="absolute top-1.5 right-3 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                    {item.badge > 99 ? "99+" : item.badge}
+                  </span>
                 )}
-                {item.id === "favorites" &&
-                  typeof item.badge === "number" &&
-                  item.badge > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] leading-none rounded-full w-4 h-4 flex items-center justify-center">
-                      {item.badge > 99 ? "99+" : item.badge}
-                    </span>
-                  )}
-              </div>
               <span className="text-xs mt-1 font-medium truncate">
                 {t(item.labelKey)}
               </span>
