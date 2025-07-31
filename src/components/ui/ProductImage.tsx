@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import EnhancedImage from "./EnhancedImage";
-import { ZoomIn } from "lucide-react";
+import { ZoomIn, X } from "lucide-react";
 
 interface ProductImageProps {
   src: string;
@@ -77,35 +77,24 @@ const ProductImage: React.FC<ProductImageProps> = ({
 
         {/* Zoom Button */}
         {showZoom && imageLoaded && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+          <button
             onClick={() => setIsZoomed(true)}
-            className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:bg-white"
+            className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:bg-white transform-gpu hover:scale-110 active:scale-95"
           >
             <ZoomIn size={16} className="text-gray-700" />
-          </motion.button>
+          </button>
         )}
       </div>
 
       {/* Zoom Modal */}
       <AnimatePresence>
         {isZoomed && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+          <div
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
             onClick={() => setIsZoomed(false)}
           >
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="relative max-w-4xl max-h-full"
+            <div
+              className="relative max-w-4xl max-h-full animate-zoom-in"
               onClick={(e) => e.stopPropagation()}
             >
               <EnhancedImage
@@ -127,20 +116,10 @@ const ProductImage: React.FC<ProductImageProps> = ({
                 onClick={() => setIsZoomed(false)}
                 className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
               >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+                <X size={20} />
               </button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
       </AnimatePresence>
     </>

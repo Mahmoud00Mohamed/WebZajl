@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import LogoPlaceholder from "./LogoPlaceholder";
 import { imageCache } from "./ImageCache";
 
@@ -58,7 +58,6 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
     auto: "",
   };
 
-  // Generate optimized URLs
   const generateOptimizedUrl = useCallback(
     (originalSrc: string, targetQuality?: number, targetWidth?: number) => {
       if (originalSrc.includes("pexels.com")) {
@@ -76,7 +75,6 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
     []
   );
 
-  // Intersection Observer for lazy loading
   useEffect(() => {
     if (priority || !imgRef.current) return;
 
@@ -100,13 +98,11 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
     };
   }, [priority, threshold, rootMargin, isInView]);
 
-  // Progressive loading effect
   useEffect(() => {
     if (!isInView || !src) return;
 
     const loadImage = async () => {
       try {
-        // Load low quality version first for blur-up effect
         if (enableBlurUp) {
           const lowQualitySrc = generateOptimizedUrl(
             src,
@@ -123,12 +119,8 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
           lowQualityImg.src = lowQualitySrc;
         }
 
-        // Load high quality version
         const highQualitySrc = generateOptimizedUrl(src, quality, width);
-
-        // Try to get from cache first
         const cachedSrc = await imageCache.getImage(highQualitySrc);
-
         const highQualityImg = new Image();
 
         highQualityImg.onload = () => {
@@ -184,31 +176,23 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
       {/* Placeholder */}
       <AnimatePresence>
         {imageState === "loading" && showPlaceholder && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100"
-          >
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 opacity-100 transition-opacity duration-300">
             <LogoPlaceholder
               size={placeholderSize}
               animate={true}
               className="opacity-60"
             />
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
       {/* Low Quality Image (Blur-up) */}
       <AnimatePresence>
         {lowQualityLoaded && imageState === "loading" && enableBlurUp && (
-          <motion.img
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <img
             src={imageSrc}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover filter blur-sm scale-105"
+            className="absolute inset-0 w-full h-full object-cover filter blur-sm scale-105 opacity-100 transition-opacity duration-300"
             loading="eager"
             aria-hidden="true"
           />
@@ -218,19 +202,13 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
       {/* High Quality Image */}
       <AnimatePresence>
         {imageState === "loaded" && (
-          <motion.img
-            initial={{ opacity: 0, scale: enableBlurUp ? 1.05 : 1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.6,
-              ease: [0.25, 0.46, 0.45, 0.94], // Custom easing for smooth appearance
-            }}
+          <img
             src={imageSrc}
             alt={alt}
             width={width}
             height={height}
             sizes={sizes}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover animate-fade-in"
             loading={priority ? "eager" : "lazy"}
             decoding="async"
           />
@@ -239,11 +217,7 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
 
       {/* Error State */}
       {imageState === "error" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-500"
-        >
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-500 opacity-100 transition-opacity duration-300">
           <LogoPlaceholder
             size={Math.min(placeholderSize, 32)}
             animate={false}
@@ -252,21 +226,13 @@ const EnhancedImage: React.FC<EnhancedImageProps> = ({
           <span className="text-xs font-medium opacity-60">
             {alt || "Image unavailable"}
           </span>
-        </motion.div>
+        </div>
       )}
 
       {/* Loading Progress Indicator */}
       {imageState === "loading" && (
         <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-200 overflow-hidden">
-          <motion.div
-            className="h-full bg-gradient-to-r from-primary to-secondary"
-            initial={{ width: "0%" }}
-            animate={{ width: lowQualityLoaded ? "70%" : "100%" }}
-            transition={{
-              duration: lowQualityLoaded ? 1 : 2,
-              ease: "easeOut",
-            }}
-          />
+          <div className="h-full bg-gradient-to-r from-primary to-secondary animate-progress-bar" />
         </div>
       )}
     </div>
