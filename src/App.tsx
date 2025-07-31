@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CartProvider } from "./context/CartContext";
@@ -9,24 +9,23 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import BottomNavigation from "./components/layout/BottomNavigation";
 
-// ✅ استيراد الصفحات بشكل مباشر (بدون lazy)
-import HomePage from "./pages/HomePage";
-import CategoryPage from "./pages/CategoryPage";
-import ProductPage from "./pages/ProductPage";
-import ProductsPage from "./pages/ProductsPage";
-import CartPage from "./pages/CartPage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import FAQPage from "./pages/FAQPage";
-import DeliveryPage from "./pages/DeliveryPage";
-import OccasionsPage from "./pages/OccasionsPage";
-import BrandsPage from "./pages/BrandsPage";
-import SpecialGiftsPage from "./pages/SpecialGiftsPage";
-import NotificationsPage from "./pages/NotificationsPage";
-import FavoritesPage from "./pages/FavoritesPage";
-import PackagesPage from "./pages/PackagesPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import GiftAssistantPage from "./pages/GiftAssistantPage";
+const HomePage = lazy(() => import("./pages/HomePage"));
+const CategoryPage = lazy(() => import("./pages/CategoryPage"));
+const ProductPage = lazy(() => import("./pages/ProductPage"));
+const ProductsPage = lazy(() => import("./pages/ProductsPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const FAQPage = lazy(() => import("./pages/FAQPage"));
+const DeliveryPage = lazy(() => import("./pages/DeliveryPage"));
+const OccasionsPage = lazy(() => import("./pages/OccasionsPage"));
+const BrandsPage = lazy(() => import("./pages/BrandsPage"));
+const SpecialGiftsPage = lazy(() => import("./pages/SpecialGiftsPage"));
+const NotificationsPage = lazy(() => import("./pages/NotificationsPage"));
+const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
+const PackagesPage = lazy(() => import("./pages/PackagesPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const GiftAssistantPage = lazy(() => import("./pages/GiftAssistantPage"));
 
 function App() {
   const { i18n } = useTranslation();
@@ -37,6 +36,7 @@ function App() {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 
+  // Cleanup image cache on unmount
   useEffect(() => {
     return () => {
       imageCache.clearCache();
@@ -44,7 +44,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "auto" }); // ✅ غيّر behavior لتجربة أفضل
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [location.pathname]);
 
   return (
@@ -55,31 +58,45 @@ function App() {
             className={`min-h-screen flex flex-col ${
               i18n.language === "ar" ? "font-sans-ar" : "font-sans-en"
             } overflow-x-hidden`}
+            style={{ scrollBehavior: "smooth" }}
           >
             <Header />
             <main className="flex-grow pb-16 md:pb-0">
-              {/* ✅ حذف Suspense */}
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/categories" element={<CategoryPage />} />
-                <Route path="/category/:slug" element={<CategoryPage />} />
-                <Route path="/product/:id" element={<ProductPage />} />
-                <Route path="/products" element={<ProductsPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/faq" element={<FAQPage />} />
-                <Route path="/delivery" element={<DeliveryPage />} />
-                <Route path="/occasions" element={<OccasionsPage />} />
-                <Route path="/occasion/:slug" element={<OccasionsPage />} />
-                <Route path="/brands" element={<BrandsPage />} />
-                <Route path="/special-gifts" element={<SpecialGiftsPage />} />
-                <Route path="/notifications" element={<NotificationsPage />} />
-                <Route path="/favorites" element={<FavoritesPage />} />
-                <Route path="/packages" element={<PackagesPage />} />
-                <Route path="/gift-assistant" element={<GiftAssistantPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
+              <Suspense
+                fallback={
+                  <div className="flex justify-center items-center min-h-screen">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                  </div>
+                }
+              >
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/categories" element={<CategoryPage />} />
+                  <Route path="/category/:slug" element={<CategoryPage />} />
+                  <Route path="/product/:id" element={<ProductPage />} />
+                  <Route path="/products" element={<ProductsPage />} />
+                  <Route path="/cart" element={<CartPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/faq" element={<FAQPage />} />
+                  <Route path="/delivery" element={<DeliveryPage />} />
+                  <Route path="/occasions" element={<OccasionsPage />} />
+                  <Route path="/occasion/:slug" element={<OccasionsPage />} />
+                  <Route path="/brands" element={<BrandsPage />} />
+                  <Route path="/special-gifts" element={<SpecialGiftsPage />} />
+                  <Route
+                    path="/notifications"
+                    element={<NotificationsPage />}
+                  />
+                  <Route path="/favorites" element={<FavoritesPage />} />
+                  <Route path="/packages" element={<PackagesPage />} />
+                  <Route
+                    path="/gift-assistant"
+                    element={<GiftAssistantPage />}
+                  />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
             </main>
             <Footer />
             <BottomNavigation />
