@@ -405,10 +405,7 @@ const NotificationsPage: React.FC = () => {
                       </div>
 
                       {/* Recipient Name */}
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        className="relative"
-                      >
+                      <div className="relative">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           <User
                             size={16}
@@ -427,7 +424,7 @@ const NotificationsPage: React.FC = () => {
                           }
                           required
                         />
-                      </motion.div>
+                      </div>
 
                       {/* Occasion Selection */}
                       <div>
@@ -604,10 +601,7 @@ const NotificationsPage: React.FC = () => {
                         </p>
                       </div>
 
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        className="relative"
-                      >
+                      <div className="relative">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           <MessageCircle
                             size={16}
@@ -627,7 +621,7 @@ const NotificationsPage: React.FC = () => {
                         <div className="absolute bottom-3 right-3 rtl:left-3 rtl:right-auto text-xs text-gray-400">
                           {form.message.length}/500
                         </div>
-                      </motion.div>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>

@@ -105,12 +105,7 @@ const CategoryPage: React.FC = () => {
         </div>
 
         <div className="relative container-custom py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white"
-          >
+          <div className="text-center text-white">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
               {slug
                 ? t(`home.categories.items.${slug}`)
@@ -121,7 +116,7 @@ const CategoryPage: React.FC = () => {
                 ? "اكتشف مجموعتنا المميزة من الهدايا الفاخرة"
                 : "Discover our exclusive collection of premium gifts"}
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -241,23 +236,13 @@ const CategoryPage: React.FC = () => {
 
       <div className="container-custom py-8">
         {!slug && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mb-12"
-          >
+          <div className="mb-12">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
               {isRtl ? "تصفح الفئات" : "Browse Categories"}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {filteredCategories.map((category, index) => (
-                <motion.div
-                  key={category.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                >
+                <div key={category.id}>
                   <Link to={`/category/${category.id}`} className="group block">
                     <div className="relative aspect-square overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 shadow-lg hover:shadow-2xl transition-all duration-500">
                       <ProductImage
@@ -271,6 +256,8 @@ const CategoryPage: React.FC = () => {
                         quality={85}
                         priority={index < 6}
                         showZoom={false}
+                        placeholderSize={24}
+                        fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
@@ -283,10 +270,10 @@ const CategoryPage: React.FC = () => {
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
 
         <div className="mb-6 flex items-center justify-between">
@@ -306,11 +293,8 @@ const CategoryPage: React.FC = () => {
               className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
             >
               {sortedProducts.map((product, index) => (
-                <motion.div
+                <div
                   key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
                   className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -378,7 +362,7 @@ const CategoryPage: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </motion.div>
           ) : (
@@ -390,11 +374,8 @@ const CategoryPage: React.FC = () => {
               className="space-y-4"
             >
               {sortedProducts.map((product, index) => (
-                <motion.div
+                <div
                   key={product.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
                   className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
                 >
                   <div className="flex">
@@ -452,18 +433,14 @@ const CategoryPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </motion.div>
           )}
         </AnimatePresence>
 
         {sortedProducts.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-16"
-          >
+          <div className="text-center py-16">
             <div className="w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto mb-6">
               <Search size={40} className="text-gray-500" />
             </div>
@@ -478,7 +455,7 @@ const CategoryPage: React.FC = () => {
             <Link to="/categories" className="btn btn-primary">
               {t("home.categories.title")}
             </Link>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>

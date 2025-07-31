@@ -370,11 +370,8 @@ const SpecialGiftsPage: React.FC = () => {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
           >
             {sortedProducts.map((product, index) => (
-              <motion.div
+              <div
                 key={product.id}
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
                 className="group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl blur-xl"></div>
@@ -397,6 +394,7 @@ const SpecialGiftsPage: React.FC = () => {
                       <motion.div
                         initial={{ scale: 0, rotate: -180 }}
                         animate={{ scale: 1, rotate: 0 }}
+                        transition={{ delay: 0.2 }}
                         className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 text-white text-xs font-bold py-2 px-3 rounded-full flex items-center gap-1 shadow-lg"
                       >
                         <Sparkles size={12} />
@@ -471,17 +469,13 @@ const SpecialGiftsPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </motion.div>
         </AnimatePresence>
 
         {sortedProducts.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20"
-          >
+          <div className="text-center py-20">
             <div className="w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto mb-8 relative">
               <Sparkles size={48} className="text-gray-500" />
               <motion.div
@@ -513,7 +507,7 @@ const SpecialGiftsPage: React.FC = () => {
                 {t("home.categories.title")}
               </Link>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>

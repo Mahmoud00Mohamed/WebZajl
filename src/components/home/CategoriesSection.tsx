@@ -3,7 +3,6 @@ import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { motion } from "framer-motion";
 import categories from "../../data/categories.json";
 import ProductImage from "../ui/ProductImage";
 import { useImagePreloader } from "../../hooks/useImagePreloader";
@@ -94,11 +93,8 @@ const CategoriesSection: React.FC = () => {
             }}
           >
             {categories.map((category: Category, index) => (
-              <motion.div
+              <div
                 key={category.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
                 className="flex-shrink-0 w-[calc(50%-4px)] sm:w-[calc(50%-4px)] md:w-48 snap-center touch-manipulation"
               >
                 <Link to={`/category/${category.id}`}>
@@ -127,7 +123,7 @@ const CategoriesSection: React.FC = () => {
                     </div>
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

@@ -823,11 +823,8 @@ const ProductsPage: React.FC = () => {
                     className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
                   >
                     {filteredProducts.map((product, index) => (
-                      <motion.div
+                      <div
                         key={product.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05, duration: 0.3 }}
                         className="bg-white rounded-xl shadow-md border border-neutral-100 overflow-hidden relative group transition-transform duration-300"
                       >
                         <Link to={`/product/${product.id}`} className="block">
@@ -843,6 +840,7 @@ const ProductsPage: React.FC = () => {
                               quality={75}
                               priority={index < 8}
                               showZoom={false}
+                              placeholderSize={28}
                             />
                             <div className="absolute top-2 left-2 flex flex-col gap-1">
                               {product.isBestSeller && (
@@ -886,7 +884,7 @@ const ProductsPage: React.FC = () => {
                             />
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </motion.div>
                 ) : (
@@ -898,11 +896,8 @@ const ProductsPage: React.FC = () => {
                     className="space-y-4"
                   >
                     {filteredProducts.map((product, index) => (
-                      <motion.div
+                      <div
                         key={product.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05, duration: 0.3 }}
                         className="bg-white rounded-xl shadow-md border border-neutral-100 p-4 flex flex-col sm:flex-row gap-4 items-start transition-transform duration-300"
                       >
                         <Link
@@ -960,7 +955,7 @@ const ProductsPage: React.FC = () => {
                             />
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </motion.div>
                 )
@@ -1106,9 +1101,6 @@ const ProductsPage: React.FC = () => {
                           className="rounded-full border-neutral-300 text-purple-500 focus:ring-purple-500 w-4 h-4"
                         />
                         <span className="font-medium">{rangeOption.label}</span>
-                        <span className="text-xs text-neutral-400 font-normal">
-                          ({rangeOption.count})
-                        </span>
                       </label>
                     ))}
                   </div>

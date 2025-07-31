@@ -731,11 +731,8 @@ const GiftAssistantPage: React.FC = () => {
           {/* Suggested Products */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             {suggestions.products.map((product, index) => (
-              <motion.div
+              <div
                 key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
                 className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-300"
               >
                 <div className="relative aspect-square overflow-hidden">
@@ -811,7 +808,7 @@ const GiftAssistantPage: React.FC = () => {
                     </span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -912,7 +909,7 @@ const GiftAssistantPage: React.FC = () => {
                       <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                         {isRtl
                           ? "ما هي المناسبة والعلاقة؟"
-                          : "What's the occasion and relationship?"}
+                          : "What is the occasion and relationship?"}
                       </h2>
                       <p className="text-gray-600 text-base md:text-lg">
                         {isRtl

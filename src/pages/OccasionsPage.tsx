@@ -190,12 +190,7 @@ const OccasionsPage: React.FC = () => {
 
       <div className="container-custom py-12">
         {!slug && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mb-16"
-          >
+          <div className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
                 {isRtl ? "اختر مناسبتك" : "Choose Your Occasion"}
@@ -277,7 +272,7 @@ const OccasionsPage: React.FC = () => {
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
 
         {(slug || !slug) && (
@@ -328,11 +323,8 @@ const OccasionsPage: React.FC = () => {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             >
               {sortedProducts.map((product, index) => (
-                <motion.div
+                <div
                   key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
                   className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
                 >
                   <div className="relative aspect-square overflow-hidden">
@@ -423,7 +415,7 @@ const OccasionsPage: React.FC = () => {
                       {isRtl ? "توصيل سريع متاح" : "Fast delivery available"}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </motion.div>
             {sortedProducts.length === 0 && (

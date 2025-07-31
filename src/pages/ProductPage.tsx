@@ -469,12 +469,6 @@ const ProductPage: React.FC = () => {
                       <Plus size={14} />
                     </button>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs">
-                    <CheckCircle size={12} className="text-green-500" />
-                    <span className="text-gray-600">
-                      {isRtl ? "متوفر" : "Available"}
-                    </span>
-                  </div>
                 </div>
               </div>
 
@@ -495,13 +489,9 @@ const ProductPage: React.FC = () => {
             {/* Features Grid */}
             <div className="grid grid-cols-2 gap-2.5">
               {features.map((feature, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.08 }}
                   className="bg-white rounded-lg p-3 shadow-sm border border-gray-100 transition-all duration-300"
-                  whileTap={{ scale: 0.99 }}
                 >
                   <div className="flex items-center gap-2.5">
                     <div className="flex-shrink-0">{feature.icon}</div>
@@ -514,7 +504,7 @@ const ProductPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>

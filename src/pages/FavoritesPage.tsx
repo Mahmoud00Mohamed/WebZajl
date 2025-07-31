@@ -230,11 +230,7 @@ const FavoritesPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {favorites.length === 0 ? (
           // Empty State
-          <motion.div
-            className="text-center py-20"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <div className="text-center py-20">
             <motion.div
               className="w-32 h-32 bg-gradient-to-r from-pink-200 to-purple-200 rounded-full flex items-center justify-center mx-auto mb-8"
               animate={{
@@ -283,11 +279,8 @@ const FavoritesPage: React.FC = () => {
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                 {suggestedProducts.map((product, index) => (
-                  <motion.div
+                  <div
                     key={product.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.1 }}
                     className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
                   >
                     <div className="relative aspect-square overflow-hidden">
@@ -332,11 +325,11 @@ const FavoritesPage: React.FC = () => {
                         />
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
         ) : (
           // Favorites Content
           <>
@@ -477,12 +470,7 @@ const FavoritesPage: React.FC = () => {
 
             {/* Favorites List */}
             {filteredFavorites.length > 0 && (
-              <motion.div
-                className="flex items-center justify-between mb-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
                   <button
                     onClick={selectAllItems}
@@ -501,7 +489,7 @@ const FavoritesPage: React.FC = () => {
                   <Trash2 size={16} />
                   {isRtl ? "مسح الكل" : "Clear All"}
                 </button>
-              </motion.div>
+              </div>
             )}
 
             <AnimatePresence mode="wait">
@@ -514,11 +502,8 @@ const FavoritesPage: React.FC = () => {
                   className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
                 >
                   {filteredFavorites.map((item, index) => (
-                    <motion.div
+                    <div
                       key={item.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
                       className="group relative bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
                     >
                       {/* Selection Checkbox */}
@@ -555,6 +540,8 @@ const FavoritesPage: React.FC = () => {
                             quality={80}
                             priority={index < 10}
                             showZoom={false}
+                            placeholderSize={24}
+                            fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                           />
                         </Link>
 
@@ -618,7 +605,7 @@ const FavoritesPage: React.FC = () => {
                           )}
                         </span>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </motion.div>
               ) : (
@@ -630,11 +617,8 @@ const FavoritesPage: React.FC = () => {
                   className="space-y-4"
                 >
                   {filteredFavorites.map((item, index) => (
-                    <motion.div
+                    <div
                       key={item.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
                       className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
                     >
                       <div className="flex">
@@ -663,6 +647,8 @@ const FavoritesPage: React.FC = () => {
                               quality={85}
                               priority={index < 5}
                               showZoom={false}
+                              placeholderSize={24}
+                              fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                             />
                           </Link>
                         </div>
@@ -719,18 +705,14 @@ const FavoritesPage: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </motion.div>
               )}
             </AnimatePresence>
 
             {filteredFavorites.length === 0 && favorites.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center py-16"
-              >
+              <div className="text-center py-16">
                 <Search size={48} className="text-gray-300 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-gray-800 mb-2">
                   {isRtl ? "لا توجد نتائج" : "No Results Found"}
@@ -749,27 +731,19 @@ const FavoritesPage: React.FC = () => {
                 >
                   {isRtl ? "مسح الفلاتر" : "Clear Filters"}
                 </button>
-              </motion.div>
+              </div>
             )}
 
             {/* Recommendations - نفس آلية ProductsPage */}
             {favorites.length > 0 && (
-              <motion.div
-                className="mt-16"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
+              <div className="mt-16">
                 <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
                   {t("favorites.recommendations")}
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                   {suggestedProducts.slice(0, 6).map((product, index) => (
-                    <motion.div
+                    <div
                       key={product.id}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.6 + index * 0.1 }}
                       className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
                     >
                       <div className="relative aspect-square overflow-hidden">
@@ -814,10 +788,10 @@ const FavoritesPage: React.FC = () => {
                           />
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             )}
           </>
         )}
