@@ -30,7 +30,7 @@ import {
   Mail,
   ZoomIn,
 } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, getProductById } from "../data";
 import ProductImage from "../components/ui/ProductImage";
 import {
@@ -111,7 +111,11 @@ const ProductPage: React.FC = () => {
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4">
-        <div className="text-center p-8 bg-white rounded-2xl shadow-xl max-w-md mx-auto animate-fade-in">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center p-8 bg-white rounded-2xl shadow-xl max-w-md mx-auto"
+        >
           <div className="w-20 h-20 bg-gradient-to-br from-red-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <Gift size={32} className="text-white" />
           </div>
@@ -126,7 +130,7 @@ const ProductPage: React.FC = () => {
           <Link to="/" className="btn btn-primary">
             {t("product.backToHome")}
           </Link>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -193,7 +197,11 @@ const ProductPage: React.FC = () => {
       {/* Desktop Breadcrumb */}
       <div className="hidden md:block">
         <div className="container-custom pt-6 pb-3">
-          <nav className="flex items-center gap-2 text-xs text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg p-3 shadow-sm border border-white/20 animate-fade-in-up">
+          <motion.nav
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 text-xs text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg p-3 shadow-sm border border-white/20"
+          >
             <Link to="/" className="hover:text-primary transition-colors">
               {isRtl ? "الرئيسية" : "Home"}
             </Link>
@@ -215,7 +223,7 @@ const ProductPage: React.FC = () => {
             <span className="text-gray-800 font-medium truncate">
               {isRtl ? product.nameAr : product.nameEn}
             </span>
-          </nav>
+          </motion.nav>
         </div>
       </div>
 
@@ -223,7 +231,12 @@ const ProductPage: React.FC = () => {
       <div className="md:container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8">
           {/* Product Images */}
-          <div className="relative animate-fade-in-left">
+          <motion.div
+            initial={{ opacity: 0, x: isRtl ? 20 : -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative"
+          >
             <div className="md:sticky md:top-6">
               {/* Main Image */}
               <div className="relative bg-white md:rounded-xl overflow-hidden shadow-md">
@@ -244,16 +257,26 @@ const ProductPage: React.FC = () => {
                   {/* Badges */}
                   <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto flex flex-col gap-1.5">
                     {product.isBestSeller && (
-                      <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold py-1.5 px-2.5 rounded-full flex items-center gap-1.5 shadow-md animate-scale-in">
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold py-1.5 px-2.5 rounded-full flex items-center gap-1.5 shadow-md"
+                      >
                         <Crown size={12} />
                         {t("home.bestSellers.bestSeller")}
-                      </div>
+                      </motion.div>
                     )}
                     {product.isSpecialGift && (
-                      <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold py-1.5 px-2.5 rounded-full flex items-center gap-1.5 shadow-md animate-scale-in">
+                      <motion.div
+                        initial={{ scale: 0, rotate: 180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold py-1.5 px-2.5 rounded-full flex items-center gap-1.5 shadow-md"
+                      >
                         <Sparkles size={12} />
                         {t("home.featuredCollections.specialGift")}
-                      </div>
+                      </motion.div>
                     )}
                   </div>
 
@@ -349,10 +372,15 @@ const ProductPage: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Product Details */}
-          <div className="p-5 md:p-0 space-y-5 animate-fade-in-right">
+          <motion.div
+            initial={{ opacity: 0, x: isRtl ? -20 : 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="p-5 md:p-0 space-y-5"
+          >
             {/* Product Header */}
             <div className="bg-white md:bg-transparent rounded-xl p-5 md:p-0 shadow-sm md:shadow-none">
               <div className="flex items-start justify-between mb-3">
@@ -467,10 +495,13 @@ const ProductPage: React.FC = () => {
             {/* Features Grid */}
             <div className="grid grid-cols-2 gap-2.5">
               {features.map((feature, index) => (
-                <div
+                <motion.div
                   key={index}
-                  className="bg-white rounded-lg p-3 shadow-sm border border-gray-100 transition-all duration-300 transform-gpu hover:scale-[1.02] active:scale-95 animate-fade-in-up"
-                  style={{ animationDelay: `${0.4 + index * 0.05}s` }}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.08 }}
+                  className="bg-white rounded-lg p-3 shadow-sm border border-gray-100 transition-all duration-300"
+                  whileTap={{ scale: 0.99 }}
                 >
                   <div className="flex items-center gap-2.5">
                     <div className="flex-shrink-0">{feature.icon}</div>
@@ -483,17 +514,22 @@ const ProductPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Product Details Tabs */}
       <div className="mt-8 md:mt-12">
         <div className="container-custom">
-          <div className="bg-white rounded-xl shadow-md overflow-hidden animate-fade-in-up">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-xl shadow-md overflow-hidden"
+          >
             {/* Tab Headers */}
             <div className="border-b border-gray-200 bg-gray-50">
               <div className="flex">
@@ -509,6 +545,12 @@ const ProductPage: React.FC = () => {
                   >
                     {tab.icon}
                     <span className="hidden sm:inline">{tab.label}</span>
+                    {activeTab === tab.id && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                      />
+                    )}
                   </button>
                 ))}
               </div>
@@ -518,7 +560,13 @@ const ProductPage: React.FC = () => {
             <div className="p-5">
               <AnimatePresence mode="wait">
                 {activeTab === "description" && (
-                  <div key="description" className="space-y-3 animate-fade-in">
+                  <motion.div
+                    key="description"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -15 }}
+                    className="space-y-3"
+                  >
                     <h3 className="text-lg font-bold text-gray-800 mb-3">
                       {t("product.description")}
                     </h3>
@@ -585,11 +633,17 @@ const ProductPage: React.FC = () => {
                         ))}
                       </ul>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {activeTab === "shipping" && (
-                  <div key="shipping" className="space-y-5 animate-fade-in">
+                  <motion.div
+                    key="shipping"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -15 }}
+                    className="space-y-5"
+                  >
                     <h3 className="text-lg font-bold text-gray-800 mb-3">
                       {isRtl ? "معلومات الشحن والتوصيل" : "Shipping & Delivery"}
                     </h3>
@@ -654,11 +708,11 @@ const ProductPage: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
@@ -666,7 +720,11 @@ const ProductPage: React.FC = () => {
       {relatedProducts.length > 0 && (
         <div className="mt-10 md:mt-12 pb-6">
           <div className="container-custom">
-            <div className="animate-fade-in-up">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+            >
               <div className="text-center mb-6">
                 <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-1.5">
                   {t("product.relatedProducts")}
@@ -680,10 +738,12 @@ const ProductPage: React.FC = () => {
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 {relatedProducts.slice(0, 8).map((relatedProduct, index) => (
-                  <div
+                  <motion.div
                     key={relatedProduct.id}
-                    className="group bg-white rounded-lg shadow-sm transition-all duration-300 overflow-hidden border border-gray-100 transform-gpu animate-fade-in-up"
-                    style={{ animationDelay: `${0.8 + index * 0.05}s` }}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 + index * 0.05 }}
+                    className="group bg-white rounded-lg shadow-sm transition-all duration-300 overflow-hidden border border-gray-100"
                   >
                     <div className="relative aspect-square overflow-hidden">
                       <Link to={`/product/${relatedProduct.id}`}>
@@ -740,10 +800,10 @@ const ProductPage: React.FC = () => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       )}
@@ -751,12 +811,18 @@ const ProductPage: React.FC = () => {
       {/* Share Modal */}
       <AnimatePresence>
         {showShareModal && (
-          <div
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             onClick={() => setShowShareModal(false)}
           >
-            <div
-              className="bg-white rounded-xl p-5 max-w-sm w-full animate-scale-in"
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.5, opacity: 0 }}
+              className="bg-white rounded-xl p-5 max-w-sm w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-3">
@@ -821,20 +887,26 @@ const ProductPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
       {/* Image Zoom Modal */}
       <AnimatePresence>
         {showImageZoomModal && (
-          <div
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4"
             onClick={() => setShowImageZoomModal(false)}
           >
-            <div
-              className="relative max-w-4xl max-h-full w-full h-auto animate-zoom-in"
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="relative max-w-4xl max-h-full w-full h-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -856,8 +928,8 @@ const ProductPage: React.FC = () => {
                 priority={true}
                 showZoom={false}
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
