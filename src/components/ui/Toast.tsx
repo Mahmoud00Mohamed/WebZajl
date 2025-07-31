@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { X } from "lucide-react";
+import { motion } from "framer-motion";
+import { CheckCircle, X, AlertCircle, Info } from "lucide-react";
 
 export interface ToastProps {
   id: string;
@@ -36,93 +37,15 @@ const Toast: React.FC<ToastProps> = ({
   const getIcon = () => {
     switch (type) {
       case "success":
-        return (
-          <svg
-            className="text-green-600"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-8.84"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-        );
+        return <CheckCircle size={20} className="text-green-600" />;
       case "error":
-        return (
-          <svg
-            className="text-red-600"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="15" y1="9" x2="9" y2="15"></line>
-            <line x1="9" y1="9" x2="15" y2="15"></line>
-          </svg>
-        );
+        return <X size={20} className="text-red-600" />;
       case "warning":
-        return (
-          <svg
-            className="text-yellow-600"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-            <line x1="12" y1="9" x2="12" y2="13"></line>
-            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-          </svg>
-        );
+        return <AlertCircle size={20} className="text-yellow-600" />;
       case "info":
-        return (
-          <svg
-            className="text-blue-600"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-        );
+        return <Info size={20} className="text-blue-600" />;
       default:
-        return (
-          <svg
-            className="text-green-600"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-8.84"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-        );
+        return <CheckCircle size={20} className="text-green-600" />;
     }
   };
 
@@ -142,8 +65,11 @@ const Toast: React.FC<ToastProps> = ({
   };
 
   return (
-    <div
-      className={`relative flex items-start gap-3 p-4 rounded-xl border shadow-lg backdrop-blur-sm animate-toast-in ${getColors()}`}
+    <motion.div
+      initial={{ opacity: 0, y: -50, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -50, scale: 0.9 }}
+      className={`relative flex items-start gap-3 p-4 rounded-xl border shadow-lg backdrop-blur-sm ${getColors()}`}
     >
       <div className="flex-shrink-0 mt-0.5">{getIcon()}</div>
 
@@ -170,12 +96,14 @@ const Toast: React.FC<ToastProps> = ({
 
       {/* Progress bar */}
       {duration > 0 && (
-        <div
-          className="absolute bottom-0 left-0 h-1 bg-current opacity-30 rounded-b-xl animate-toast-progress"
-          style={{ animationDuration: `${duration}ms` }}
+        <motion.div
+          className="absolute bottom-0 left-0 h-1 bg-current opacity-30 rounded-b-xl"
+          initial={{ width: "100%" }}
+          animate={{ width: "0%" }}
+          transition={{ duration: duration / 1000, ease: "linear" }}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
 

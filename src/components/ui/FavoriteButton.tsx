@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useToast } from "../../context/ToastContext";
@@ -66,13 +67,15 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   };
 
   return (
-    <button
+    <motion.button
       onClick={handleToggleFavorite}
-      className={`flex items-center justify-center transition-all duration-300 transform-gpu hover:scale-110 active:scale-95 ${
+      className={`flex items-center justify-center transition-all duration-300 ${
         isProductFavorite
           ? "text-red-500 hover:text-red-600"
           : "text-gray-400 hover:text-red-500"
       } ${className}`}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
       aria-label={
         isProductFavorite
           ? isRtl
@@ -83,13 +86,16 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
           : "Add to favorites"
       }
     >
-      <div className={isProductFavorite ? "animate-heartbeat" : ""}>
+      <motion.div
+        animate={isProductFavorite ? { scale: [1, 1.3, 1] } : {}}
+        transition={{ duration: 0.3 }}
+      >
         <Heart
           size={size}
           fill={isProductFavorite ? "currentColor" : "none"}
           className="transition-all duration-300"
         />
-      </div>
+      </motion.div>
 
       {showLabel && (
         <span className="ml-2 rtl:mr-2 rtl:ml-0 text-sm font-medium">
@@ -102,7 +108,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
             : "Add to Favorites"}
         </span>
       )}
-    </button>
+    </motion.button>
   );
 };
 

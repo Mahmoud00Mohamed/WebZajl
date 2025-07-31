@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 interface LogoPlaceholderProps {
   size?: number;
@@ -13,15 +14,31 @@ const LogoPlaceholder: React.FC<LogoPlaceholderProps> = ({
 }) => {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <div className="relative">
+      <motion.div
+        className="relative"
+        animate={
+          animate
+            ? {
+                scale: [1, 1.05, 1],
+                opacity: [0.6, 1, 0.6],
+              }
+            : {}
+        }
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
         <svg
           width={size}
           height={size}
           viewBox="0 0 32 32"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className={`text-primary ${animate ? "animate-logo-pulse" : ""}`}
+          className="text-primary"
         >
+          {/* Simple dove/pigeon icon as placeholder */}
           <path
             d="M16 4C12 4 8 6 8 10C8 12 9 14 11 15L10 18C10 20 12 22 16 22C20 22 22 20 22 18L21 15C23 14 24 12 24 10C24 6 20 4 16 4Z"
             fill="currentColor"
@@ -38,13 +55,12 @@ const LogoPlaceholder: React.FC<LogoPlaceholderProps> = ({
           />
         </svg>
 
+        {/* Subtle glow effect */}
         <div
-          className={`absolute inset-0 rounded-full bg-primary/10 blur-sm ${
-            animate ? "animate-logo-glow" : ""
-          }`}
+          className="absolute inset-0 rounded-full bg-primary/10 blur-sm"
           style={{ width: size, height: size }}
         />
-      </div>
+      </motion.div>
     </div>
   );
 };
