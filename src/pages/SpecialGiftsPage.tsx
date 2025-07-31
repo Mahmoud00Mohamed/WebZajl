@@ -11,7 +11,7 @@ import {
   Filter,
   Search,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { getSpecialGifts } from "../data";
 import { useCart } from "../context/CartContext";
 import ProductImage from "../components/ui/ProductImage";
@@ -124,29 +124,18 @@ const SpecialGiftsPage: React.FC = () => {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 opacity-90"></div>
           <div className="absolute inset-0">
-            {[...Array(20)].map((_, i) => (
-              <motion.div
+            {[...Array(10)].map((_, i) => (
+              <div
                 key={i}
-                initial={{
-                  x: Math.random() * window.innerWidth,
-                  y: Math.random() * window.innerHeight,
-                  scale: 0,
-                  rotate: 0,
+                style={{
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 5}s`,
                 }}
-                animate={{
-                  y: [null, Math.random() * window.innerHeight],
-                  scale: [0, 1, 0],
-                  rotate: [0, 360],
-                }}
-                transition={{
-                  duration: Math.random() * 3 + 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-                className="absolute w-2 h-2 text-white/30"
+                className="absolute w-2 h-2 text-white/30 animate-sparkle"
               >
                 <Sparkles size={8} />
-              </motion.div>
+              </div>
             ))}
           </div>
           <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse"></div>
@@ -161,47 +150,23 @@ const SpecialGiftsPage: React.FC = () => {
         </div>
 
         <div className="relative container-custom py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white"
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-              className="inline-flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full mb-6 relative"
-            >
+          <div className="text-center text-white animate-fade-in-up">
+            <div className="inline-flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full mb-6 relative animate-scale-in">
               <Sparkles size={48} className="text-white" />
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 border-2 border-white/30 rounded-full border-dashed"
-              ></motion.div>
-            </motion.div>
+              <div className="absolute inset-0 border-2 border-white/30 rounded-full border-dashed animate-spin-slow"></div>
+            </div>
 
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
               {t("navigation.specialGifts")}
             </h1>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-8"
-            >
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-8 animate-fade-in">
               {isRtl
                 ? "اكتشف مجموعتنا الحصرية من الهدايا المميزة التي تترك انطباعاً لا يُنسى"
                 : "Discover our exclusive collection of special gifts that leave an unforgettable impression"}
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="flex flex-wrap justify-center gap-6 text-white/90"
-            >
+            <div className="flex flex-wrap justify-center gap-6 text-white/90 animate-fade-in-up">
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
                 <Crown size={16} />
                 <span className="text-sm">
@@ -220,8 +185,8 @@ const SpecialGiftsPage: React.FC = () => {
                   {isRtl ? "توصيل سريع" : "Fast Delivery"}
                 </span>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -292,12 +257,7 @@ const SpecialGiftsPage: React.FC = () => {
 
           <AnimatePresence>
             {showFilters && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-6 p-6 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200 shadow-inner"
-              >
+              <div className="mt-6 p-6 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200 shadow-inner animate-fade-in-down">
                 <h3 className="text-lg font-bold text-gray-800 mb-4">
                   {isRtl ? "فلاتر متقدمة" : "Advanced Filters"}
                 </h3>
@@ -338,7 +298,7 @@ const SpecialGiftsPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
           </AnimatePresence>
         </div>
@@ -362,20 +322,15 @@ const SpecialGiftsPage: React.FC = () => {
         </div>
 
         <AnimatePresence mode="wait">
-          <motion.div
+          <div
             key={`${filterBy}-${sortBy}-${searchTerm}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
           >
             {sortedProducts.map((product, index) => (
-              <motion.div
+              <div
                 key={product.id}
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                className="group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden"
+                className="group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden animate-fade-in-up"
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl blur-xl"></div>
                 <div className="relative">
@@ -394,26 +349,17 @@ const SpecialGiftsPage: React.FC = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto">
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 text-white text-xs font-bold py-2 px-3 rounded-full flex items-center gap-1 shadow-lg"
-                      >
+                      <div className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 text-white text-xs font-bold py-2 px-3 rounded-full flex items-center gap-1 shadow-lg animate-scale-in">
                         <Sparkles size={12} />
                         {t("home.featuredCollections.specialGift")}
-                      </motion.div>
+                      </div>
                     </div>
                     {product.isBestSeller && (
                       <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto mt-12">
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: 0.2 }}
-                          className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1 shadow-lg"
-                        >
+                        <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1 shadow-lg animate-scale-in-fast">
                           <Sparkles size={12} />
                           {t("home.bestSellers.bestSeller")}
-                        </motion.div>
+                        </div>
                       </div>
                     )}
                     <div className="absolute top-3 right-3 rtl:left-3 rtl:right-auto flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
@@ -471,24 +417,16 @@ const SpecialGiftsPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </AnimatePresence>
 
         {sortedProducts.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20"
-          >
+          <div className="text-center py-20 animate-fade-in-up">
             <div className="w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto mb-8 relative">
               <Sparkles size={48} className="text-gray-500" />
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 border-2 border-gray-300 rounded-full border-dashed"
-              ></motion.div>
+              <div className="absolute inset-0 border-2 border-gray-300 rounded-full border-dashed animate-spin-slow"></div>
             </div>
             <h3 className="text-2xl font-bold text-gray-800 mb-4">
               {isRtl ? "لا توجد هدايا مميزة" : "No Special Gifts Found"}
@@ -513,7 +451,7 @@ const SpecialGiftsPage: React.FC = () => {
                 {t("home.categories.title")}
               </Link>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>

@@ -17,7 +17,7 @@ import {
   DollarSign,
   CheckCircle,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { allProducts } from "../data";
 import categories from "../data/categories.json";
 import occasions from "../data/occasions.json";
@@ -398,6 +398,12 @@ const ProductsPage: React.FC = () => {
       : 0) +
     (searchTerm.length > 0 ? 1 : 0);
 
+  const filterItemVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
+    exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 to-purple-50 px-4 sm:px-6 lg:px-8 font-serif text-neutral-800">
       <div className="max-w-7xl mx-auto py-8 flex flex-col lg:flex-row gap-8">
@@ -476,9 +482,10 @@ const ProductsPage: React.FC = () => {
                 <AnimatePresence>
                   {expandedFilters.includes("categories") && (
                     <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={filterItemVariants}
                       className="mt-3 space-y-3 overflow-hidden"
                     >
                       {filterOptions.categories.map((category) => {
@@ -530,9 +537,10 @@ const ProductsPage: React.FC = () => {
                 <AnimatePresence>
                   {expandedFilters.includes("price") && (
                     <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={filterItemVariants}
                       className="mt-3 space-y-3 overflow-hidden"
                     >
                       {priceRanges.map((rangeOption) => (
@@ -597,9 +605,10 @@ const ProductsPage: React.FC = () => {
                 <AnimatePresence>
                   {expandedFilters.includes("occasions") && (
                     <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={filterItemVariants}
                       className="mt-3 space-y-3 overflow-hidden"
                     >
                       {filterOptions.occasions.map((occasion) => {
@@ -651,9 +660,10 @@ const ProductsPage: React.FC = () => {
                 <AnimatePresence>
                   {expandedFilters.includes("features") && (
                     <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={filterItemVariants}
                       className="mt-3 space-y-3 overflow-hidden"
                     >
                       {filterOptions.features.map((feature) => (
@@ -793,7 +803,7 @@ const ProductsPage: React.FC = () => {
                   onClick={() => setActiveSection(section.id)}
                   className={`px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 shadow-sm ${
                     activeSection === section.id
-                      ? "bg-purple-600 text-white transform scale-105"
+                      ? "bg-purple-600 text-white"
                       : "bg-white text-neutral-700 hover:bg-neutral-100 hover:text-purple-600 border border-neutral-200"
                   }`}
                 >
@@ -804,31 +814,23 @@ const ProductsPage: React.FC = () => {
 
             <AnimatePresence mode="wait">
               {isLoading ? (
-                <motion.div
+                <div
                   key="loading"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
                   className="flex justify-center items-center py-16"
                 >
                   <div className="animate-spin rounded-full h-10 w-10 border-4 border-purple-600 border-t-transparent"></div>
-                </motion.div>
+                </div>
               ) : filteredProducts.length > 0 ? (
                 viewMode === "grid" ? (
-                  <motion.div
+                  <div
                     key="grid"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
                     className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
                   >
                     {filteredProducts.map((product, index) => (
-                      <motion.div
+                      <div
                         key={product.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05, duration: 0.3 }}
-                        className="bg-white rounded-xl shadow-md border border-neutral-100 overflow-hidden relative group transition-transform duration-300"
+                        className="bg-white rounded-xl shadow-md border border-neutral-100 overflow-hidden relative group transition-transform duration-300 transform-gpu animate-fade-in-up"
+                        style={{ animationDelay: `${index * 0.05}s` }}
                       >
                         <Link to={`/product/${product.id}`} className="block">
                           <div className="relative aspect-[4/3] overflow-hidden">
@@ -886,24 +888,16 @@ const ProductsPage: React.FC = () => {
                             />
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
-                  </motion.div>
+                  </div>
                 ) : (
-                  <motion.div
-                    key="list"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="space-y-4"
-                  >
+                  <div key="list" className="space-y-4">
                     {filteredProducts.map((product, index) => (
-                      <motion.div
+                      <div
                         key={product.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05, duration: 0.3 }}
-                        className="bg-white rounded-xl shadow-md border border-neutral-100 p-4 flex flex-col sm:flex-row gap-4 items-start transition-transform duration-300"
+                        className="bg-white rounded-xl shadow-md border border-neutral-100 p-4 flex flex-col sm:flex-row gap-4 items-start transition-transform duration-300 transform-gpu animate-fade-in-left"
+                        style={{ animationDelay: `${index * 0.05}s` }}
                       >
                         <Link
                           to={`/product/${product.id}`}
@@ -960,15 +954,13 @@ const ProductsPage: React.FC = () => {
                             />
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
-                  </motion.div>
+                  </div>
                 )
               ) : (
-                <motion.div
+                <div
                   key="no-products"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
                   className="text-center py-16 bg-white rounded-xl shadow-md border border-neutral-100"
                 >
                   <div className="w-20 h-20 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner">
@@ -989,7 +981,7 @@ const ProductsPage: React.FC = () => {
                     <X size={14} />
                     {isRtl ? "مسح الفلاتر" : "Clear Filters"}
                   </button>
-                </motion.div>
+                </div>
               )}
             </AnimatePresence>
           </div>
@@ -999,20 +991,14 @@ const ProductsPage: React.FC = () => {
       {/* Mobile Filters Modal */}
       <AnimatePresence>
         {showMobileFilters && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
             onClick={() => setShowMobileFilters(false)}
           >
-            <motion.div
-              initial={{ x: isRtl ? "100%" : "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: isRtl ? "100%" : "-100%" }}
+            <div
               className={`fixed inset-y-0 ${
                 isRtl ? "right-0" : "left-0"
-              } w-11/12 sm:w-80 bg-white shadow-2xl overflow-y-auto p-6 rounded-l-2xl lg:rounded-none transition-transform duration-300 ease-out`}
+              } w-11/12 sm:w-80 bg-white shadow-2xl overflow-y-auto p-6 rounded-l-2xl lg:rounded-none transition-transform duration-300 ease-out animate-slide-in-rtl`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-6 border-b border-neutral-200 pb-3">
@@ -1106,9 +1092,6 @@ const ProductsPage: React.FC = () => {
                           className="rounded-full border-neutral-300 text-purple-500 focus:ring-purple-500 w-4 h-4"
                         />
                         <span className="font-medium">{rangeOption.label}</span>
-                        <span className="text-xs text-neutral-400 font-normal">
-                          ({rangeOption.count})
-                        </span>
                       </label>
                     ))}
                   </div>
@@ -1187,8 +1170,8 @@ const ProductsPage: React.FC = () => {
                   {isRtl ? "تطبيق الفلاتر" : "Apply Filters"}
                 </button>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
       </AnimatePresence>
     </div>
