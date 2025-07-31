@@ -9,7 +9,6 @@ import { allProducts, getProductsByCategory } from "../data";
 import FavoriteButton from "../components/ui/FavoriteButton";
 import AddToCartButton from "../components/ui/AddToCartButton";
 import ProductImage from "../components/ui/ProductImage";
-import { useImagePreloader } from "../hooks/useImagePreloader";
 
 const CategoryPage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -55,17 +54,6 @@ const CategoryPage: React.FC = () => {
         return b.isBestSeller ? 1 : -1;
     }
   });
-
-  // Preload visible product images
-  const visibleProducts = React.useMemo(
-    () => sortedProducts.slice(0, 12),
-    [sortedProducts]
-  );
-  const productImages = React.useMemo(
-    () => visibleProducts.map((product) => product.imageUrl),
-    [visibleProducts]
-  );
-  useImagePreloader(productImages, { priority: false });
 
   if (slug && filteredCategories.length === 0) {
     return (
