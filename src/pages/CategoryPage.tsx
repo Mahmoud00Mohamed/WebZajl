@@ -1,13 +1,14 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { Search, Filter, Grid, List, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
 import categories from "../data/categories.json";
 import { allProducts, getProductsByCategory } from "../data";
 import FavoriteButton from "../components/ui/FavoriteButton";
 import AddToCartButton from "../components/ui/AddToCartButton";
+import ProductImage from "../components/ui/ProductImage";
 import { useImagePreloader } from "../hooks/useImagePreloader";
 
 const CategoryPage: React.FC = () => {
@@ -40,27 +41,31 @@ const CategoryPage: React.FC = () => {
       product.price >= priceRange[0] && product.price <= priceRange[1]
   );
 
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
-      case "name":
-        return isRtl
-          ? a.nameAr.localeCompare(b.nameAr)
-          : a.nameEn.localeCompare(b.nameEn);
-      default:
-        return b.isBestSeller ? 1 : -1;
-    }
-  });
+  const sortedProducts = useMemo(
+    () =>
+      [...filteredProducts].sort((a, b) => {
+        switch (sortBy) {
+          case "price-low":
+            return a.price - b.price;
+          case "price-high":
+            return b.price - a.price;
+          case "name":
+            return isRtl
+              ? a.nameAr.localeCompare(b.nameAr)
+              : a.nameEn.localeCompare(b.nameEn);
+          default:
+            return b.isBestSeller ? 1 : -1;
+        }
+      }),
+    [filteredProducts, sortBy, isRtl]
+  );
 
   // Preload visible product images
-  const visibleProducts = React.useMemo(
+  const visibleProducts = useMemo(
     () => sortedProducts.slice(0, 12),
     [sortedProducts]
   );
-  const productImages = React.useMemo(
+  const productImages = useMemo(
     () => visibleProducts.map((product) => product.imageUrl),
     [visibleProducts]
   );
@@ -251,31 +256,40 @@ const CategoryPage: React.FC = () => {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {filteredCategories.map((category, index) => (
-                <motion.div
+                <Link
                   key={category.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
+                  to={`/category/${category.id}`}
+                  className="group block"
                 >
-                  <Link to={`/category/${category.id}`} className="group block">
-                    <div className="relative aspect-square overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 shadow-lg hover:shadow-2xl transition-all duration-500">
-                      <img
-                        src={category.imageUrl}
-                        alt={t(category.nameKey)}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                        <h3 className="text-white font-bold text-center text-sm md:text-base drop-shadow-lg">
-                          {t(category.nameKey)}
-                        </h3>
-                      </div>
-                      <div className="absolute top-2 right-2 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <Eye size={16} className="text-white" />
-                      </div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="relative aspect-square overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 shadow-lg hover:shadow-2xl transition-all duration-500"
+                  >
+                    <ProductImage
+                      src={category.imageUrl}
+                      alt={t(category.nameKey)}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      width={200}
+                      height={200}
+                      aspectRatio="square"
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 16.66vw, 200px"
+                      quality={85}
+                      priority={index < 6}
+                      showZoom={false}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="text-white font-bold text-center text-sm md:text-base drop-shadow-lg">
+                        {t(category.nameKey)}
+                      </h3>
                     </div>
-                  </Link>
-                </motion.div>
+                    <div className="absolute top-2 right-2 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Eye size={16} className="text-white" />
+                    </div>
+                  </motion.div>
+                </Link>
               ))}
             </div>
           </motion.div>
@@ -305,60 +319,69 @@ const CategoryPage: React.FC = () => {
                   transition={{ delay: index * 0.1 }}
                   className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
-                      src={product.imageUrl}
-                      alt={isRtl ? product.nameAr : product.nameEn}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto flex flex-col gap-2">
-                      {product.isBestSeller && (
-                        <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1">
-                          {t("home.bestSellers.bestSeller")}
-                        </div>
-                      )}
-                      {product.isSpecialGift && (
-                        <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold py-1 px-3 rounded-full">
-                          {t("home.featuredCollections.specialGift")}
-                        </div>
-                      )}
-                    </div>
-                    <div className="absolute top-3 right-3 rtl:left-3 rtl:right-auto flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                      <FavoriteButton
-                        product={product}
-                        className="w-10 h-10 rounded-full backdrop-blur-sm border border-white/20 shadow-lg"
-                        size={16}
+                  <Link to={`/product/${product.id}`} className="block">
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <ProductImage
+                        src={product.imageUrl}
+                        alt={isRtl ? product.nameAr : product.nameEn}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        width={320}
+                        height={240}
+                        aspectRatio="landscape"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        quality={80}
+                        priority={index < 8}
+                        showZoom={false}
+                        placeholderSize={28}
+                        fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                       />
-                    </div>
-                    <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                      <div className="flex gap-2">
-                        <AddToCartButton
-                          product={product}
-                          variant="primary"
-                          size="sm"
-                          className="flex-1"
-                          showLabel={false}
-                        />
-                        <Link
-                          to={`/product/${product.id}`}
-                          className="bg-white/90 backdrop-blur-sm text-gray-800 py-2 px-4 rounded-xl font-medium text-center hover:bg-white transition-all duration-300 shadow-lg"
-                        >
-                          {isRtl ? "عرض" : "View"}
-                        </Link>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto flex flex-col gap-2">
+                        {product.isBestSeller && (
+                          <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1">
+                            {t("home.bestSellers.bestSeller")}
+                          </div>
+                        )}
+                        {product.isSpecialGift && (
+                          <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold py-1 px-3 rounded-full">
+                            {t("home.featuredCollections.specialGift")}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
-                  <div className="p-4">
-                    <Link to={`/product/${product.id}`} className="block">
+                    <div className="p-4">
                       <h3 className="font-bold text-gray-800 hover:text-primary transition-colors line-clamp-2 mb-2">
                         {isRtl ? product.nameAr : product.nameEn}
                       </h3>
-                    </Link>
-                    <div className="flex items-center justify-between">
-                      <p className="text-xl font-bold text-primary">
-                        {product.price} {isRtl ? "ر.س" : "SAR"}
-                      </p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-xl font-bold text-primary">
+                          {product.price} {isRtl ? "ر.س" : "SAR"}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                  <div className="absolute top-3 right-3 rtl:left-3 rtl:right-auto flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                    <FavoriteButton
+                      product={product}
+                      className="w-10 h-10 rounded-full backdrop-blur-sm border border-white/20 shadow-lg"
+                      size={16}
+                    />
+                  </div>
+                  <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <div className="flex gap-2">
+                      <AddToCartButton
+                        product={product}
+                        variant="primary"
+                        size="sm"
+                        className="flex-1"
+                        showLabel={false}
+                      />
+                      <Link
+                        to={`/product/${product.id}`}
+                        className="bg-white/90 backdrop-blur-sm text-gray-800 py-2 px-4 rounded-xl font-medium text-center hover:bg-white transition-all duration-300 shadow-lg"
+                      >
+                        {isRtl ? "عرض" : "View"}
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
@@ -382,10 +405,19 @@ const CategoryPage: React.FC = () => {
                 >
                   <div className="flex">
                     <div className="w-32 h-32 flex-shrink-0">
-                      <img
+                      <ProductImage
                         src={product.imageUrl}
                         alt={isRtl ? product.nameAr : product.nameEn}
                         className="w-full h-full object-cover"
+                        width={128}
+                        height={128}
+                        aspectRatio="square"
+                        sizes="128px"
+                        quality={80}
+                        priority={index < 4}
+                        showZoom={false}
+                        placeholderSize={24}
+                        fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                       />
                     </div>
                     <div className="flex-1 p-4 flex items-center justify-between">
