@@ -1,9 +1,8 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { Search, Filter, Grid, List, Eye } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import categories from "../data/categories.json";
 import { allProducts, getProductsByCategory } from "../data";
 import FavoriteButton from "../components/ui/FavoriteButton";
@@ -57,11 +56,11 @@ const CategoryPage: React.FC = () => {
   });
 
   // Preload visible product images
-  const visibleProducts = React.useMemo(
+  const visibleProducts = useMemo(
     () => sortedProducts.slice(0, 12),
     [sortedProducts]
   );
-  const productImages = React.useMemo(
+  const productImages = useMemo(
     () => visibleProducts.map((product) => product.imageUrl),
     [visibleProducts]
   );
@@ -70,11 +69,7 @@ const CategoryPage: React.FC = () => {
   if (slug && filteredCategories.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center p-8 bg-white rounded-3xl shadow-2xl max-w-md mx-4"
-        >
+        <div className="text-center p-8 bg-white rounded-3xl shadow-2xl max-w-md mx-4 animate-fade-in-up">
           <div className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
             <Search size={40} className="text-white" />
           </div>
@@ -89,7 +84,7 @@ const CategoryPage: React.FC = () => {
           <Link to="/" className="btn btn-primary">
             {t("product.backToHome")}
           </Link>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -99,18 +94,13 @@ const CategoryPage: React.FC = () => {
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent opacity-90"></div>
         <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
-          <div className="absolute bottom-20 right-20 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-48 h-48 bg-white/5 rounded-full blur-2xl animate-pulse-delay-1s"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse-delay-2s"></div>
         </div>
 
         <div className="relative container-custom py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white"
-          >
+          <div className="text-center text-white animate-fade-in-up">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
               {slug
                 ? t(`home.categories.items.${slug}`)
@@ -121,7 +111,7 @@ const CategoryPage: React.FC = () => {
                 ? "اكتشف مجموعتنا المميزة من الهدايا الفاخرة"
                 : "Discover our exclusive collection of premium gifts"}
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -193,12 +183,7 @@ const CategoryPage: React.FC = () => {
 
           <AnimatePresence>
             {showFilters && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-4 p-4 bg-gray-50 rounded-2xl"
-              >
+              <div className="mt-4 p-4 bg-gray-50 rounded-2xl animate-fade-in-down">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -233,7 +218,7 @@ const CategoryPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
           </AnimatePresence>
         </div>
@@ -241,22 +226,16 @@ const CategoryPage: React.FC = () => {
 
       <div className="container-custom py-8">
         {!slug && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mb-12"
-          >
+          <div className="mb-12 animate-fade-in-up">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
               {isRtl ? "تصفح الفئات" : "Browse Categories"}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {filteredCategories.map((category, index) => (
-                <motion.div
+                <div
                   key={category.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
+                  className="group block animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <Link to={`/category/${category.id}`} className="group block">
                     <div className="relative aspect-square overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 shadow-lg hover:shadow-2xl transition-all duration-500">
@@ -283,10 +262,10 @@ const CategoryPage: React.FC = () => {
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
 
         <div className="mb-6 flex items-center justify-between">
@@ -298,20 +277,15 @@ const CategoryPage: React.FC = () => {
 
         <AnimatePresence mode="wait">
           {viewMode === "grid" ? (
-            <motion.div
+            <div
               key="grid"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
             >
               {sortedProducts.map((product, index) => (
-                <motion.div
+                <div
                   key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
+                  className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <ProductImage
@@ -378,24 +352,16 @@ const CategoryPage: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           ) : (
-            <motion.div
-              key="list"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-4"
-            >
+            <div key="list" className="space-y-4">
               {sortedProducts.map((product, index) => (
-                <motion.div
+                <div
                   key={product.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden animate-fade-in-left"
+                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <div className="flex">
                     <div className="w-32 h-32 flex-shrink-0">
@@ -452,18 +418,14 @@ const CategoryPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           )}
         </AnimatePresence>
 
         {sortedProducts.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-16"
-          >
+          <div className="text-center py-16 animate-fade-in-up">
             <div className="w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto mb-6">
               <Search size={40} className="text-gray-500" />
             </div>
@@ -478,7 +440,7 @@ const CategoryPage: React.FC = () => {
             <Link to="/categories" className="btn btn-primary">
               {t("home.categories.title")}
             </Link>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>
