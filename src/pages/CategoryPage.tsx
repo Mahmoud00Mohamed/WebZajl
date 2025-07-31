@@ -306,8 +306,11 @@ const CategoryPage: React.FC = () => {
               className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
             >
               {sortedProducts.map((product, index) => (
-                <div
+                <motion.div
                   key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
                   className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -375,7 +378,7 @@ const CategoryPage: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           ) : (
@@ -387,8 +390,11 @@ const CategoryPage: React.FC = () => {
               className="space-y-4"
             >
               {sortedProducts.map((product, index) => (
-                <div
+                <motion.div
                   key={product.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
                   className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
                 >
                   <div className="flex">
@@ -446,7 +452,7 @@ const CategoryPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           )}

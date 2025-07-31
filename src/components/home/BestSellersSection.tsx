@@ -1,3 +1,4 @@
+// src/components/home/BestSellersSection.tsx
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -13,39 +14,38 @@ const BestSellersSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const bestSellers = React.useMemo(() => getBestSellers(), []);
 
+  // Preload images for better UX
   const bestSellerImages = React.useMemo(
     () => bestSellers.slice(0, 6).map((product) => product.imageUrl),
     [bestSellers]
   );
   useImagePreloader(bestSellerImages, { priority: true });
 
-  const scrollLeft = () => {
+  // تحسين التمرير للأجهزة المحمولة
+  const handleTouchScroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
+      const scrollAmount = 280; // مسافة أكبر للأجهزة المحمولة
+      const targetScroll = isRtl
+        ? direction === "left"
+          ? scrollAmount
+          : -scrollAmount
+        : direction === "left"
+        ? -scrollAmount
+        : scrollAmount;
+
       scrollRef.current.scrollBy({
-        left: isRtl ? 280 : -280,
+        left: targetScroll,
         behavior: "smooth",
       });
     }
+  };
+
+  const scrollLeft = () => {
+    handleTouchScroll("left");
   };
 
   const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: isRtl ? -280 : 280,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (index: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: index * 0.1,
-      },
-    }),
+    handleTouchScroll("right");
   };
 
   return (
@@ -110,14 +110,14 @@ const BestSellersSection: React.FC = () => {
             {bestSellers.map((product, index) => (
               <motion.div
                 key={product.id}
-                custom={index}
-                variants={itemVariants}
-                initial="hidden"
-                animate="visible"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
                 className="flex-shrink-0 w-[calc(50%-4px)] sm:w-[calc(50%-4px)] md:w-56 h-60 md:h-72 snap-center touch-manipulation"
               >
                 <Link to={`/product/${product.id}`}>
                   <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden h-full flex flex-col">
+                    {/* Image Container */}
                     <div className="relative aspect-square overflow-hidden rounded-t-xl">
                       <ProductImage
                         src={product.imageUrl}
@@ -137,6 +137,7 @@ const BestSellersSection: React.FC = () => {
                         placeholderSize={32}
                         fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                       />
+                      {/* Best Seller Badge - Positioned inside image area */}
                       <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto z-10">
                         <motion.div
                           initial={{ scale: 0, rotate: -180 }}
@@ -149,6 +150,8 @@ const BestSellersSection: React.FC = () => {
                         </motion.div>
                       </div>
                     </div>
+
+                    {/* Content (Title and Price) - Below the image */}
                     <div className="p-3 text-start flex-grow flex flex-col justify-between">
                       <h3 className="text-base font-semibold text-gray-900 line-clamp-1 md:line-clamp-2 mb-0">
                         {i18n.language === "ar"

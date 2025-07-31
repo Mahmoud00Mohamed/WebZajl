@@ -341,7 +341,11 @@ const FavoritesPage: React.FC = () => {
           // Favorites Content
           <>
             {/* Filters and Controls */}
-            <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 p-6 mb-8">
+            <motion.div
+              className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 p-6 mb-8"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
               <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
                 {/* Search */}
                 <div className="relative flex-1 max-w-md">
@@ -469,11 +473,16 @@ const FavoritesPage: React.FC = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
 
             {/* Favorites List */}
             {filteredFavorites.length > 0 && (
-              <div className="flex items-center justify-between mb-6">
+              <motion.div
+                className="flex items-center justify-between mb-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
                 <div className="flex items-center gap-4">
                   <button
                     onClick={selectAllItems}
@@ -492,7 +501,7 @@ const FavoritesPage: React.FC = () => {
                   <Trash2 size={16} />
                   {isRtl ? "مسح الكل" : "Clear All"}
                 </button>
-              </div>
+              </motion.div>
             )}
 
             <AnimatePresence mode="wait">
@@ -546,8 +555,6 @@ const FavoritesPage: React.FC = () => {
                             quality={80}
                             priority={index < 10}
                             showZoom={false}
-                            placeholderSize={24}
-                            fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                           />
                         </Link>
 
@@ -747,7 +754,12 @@ const FavoritesPage: React.FC = () => {
 
             {/* Recommendations - نفس آلية ProductsPage */}
             {favorites.length > 0 && (
-              <div className="mt-16">
+              <motion.div
+                className="mt-16"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
                 <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
                   {t("favorites.recommendations")}
                 </h2>
@@ -805,7 +817,7 @@ const FavoritesPage: React.FC = () => {
                     </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             )}
           </>
         )}

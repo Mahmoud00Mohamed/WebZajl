@@ -109,12 +109,11 @@ const HeroSlider: React.FC = () => {
     return promoSlides;
   }, [nearestOccasion, activePromotions]);
 
-  usePreloadCriticalImages(
-    useMemo(
-      () => allSlides.slice(0, 3).map((slide) => slide.image),
-      [allSlides]
-    )
-  );
+  // Preload hero images for instant display
+  const heroImages = React.useMemo(() => {
+    return allSlides.slice(0, 3).map((slide) => slide.image);
+  }, [allSlides]);
+  usePreloadCriticalImages(heroImages);
 
   const extendedSlides = useMemo(
     () => [...allSlides, allSlides[0]],
@@ -192,13 +191,6 @@ const HeroSlider: React.FC = () => {
 
   if (allSlides.length === 0) return null;
 
-  const sliderAnimationProps = useMemo(
-    () => ({
-      x: isArabic ? currentSlide * 100 + "%" : -currentSlide * 100 + "%",
-    }),
-    [currentSlide, isArabic]
-  );
-
   return (
     <section className="py-12 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       {isOccasionActive && currentSlideData?.type === "occasion" && (
@@ -219,7 +211,11 @@ const HeroSlider: React.FC = () => {
           <motion.div
             ref={sliderRef}
             className="flex h-full w-full will-change-transform"
-            animate={sliderAnimationProps}
+            animate={{
+              x: isArabic
+                ? currentSlide * 100 + "%"
+                : -currentSlide * 100 + "%",
+            }}
             transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
           >
             {extendedSlides.map((slide, index) => (
