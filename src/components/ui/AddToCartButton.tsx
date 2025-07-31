@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { ShoppingCart, Check } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useToast } from "../../context/ToastContext";
@@ -56,7 +56,6 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     setIsAdding(true);
 
     try {
-      // Add to cart with proper structure
       addToCart({
         id: product.id,
         nameEn: product.nameEn,
@@ -66,10 +65,8 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         quantity: quantity,
       });
 
-      // Show success animation
       setJustAdded(true);
 
-      // Show toast notification
       showSuccess(
         isRtl ? "تم الإضافة للسلة" : "Added to Cart",
         isRtl
@@ -81,7 +78,6 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         }
       );
 
-      // Reset states after animation
       setTimeout(() => {
         setJustAdded(false);
         setIsAdding(false);
@@ -90,7 +86,6 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       console.error("خطأ في إضافة المنتج إلى عربة التسوق:", error);
       setIsAdding(false);
 
-      // Show error message if toast context is available
       if (showSuccess) {
         showSuccess(
           isRtl ? "خطأ" : "Error",
@@ -103,31 +98,25 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
   const getButtonContent = () => {
     if (justAdded) {
       return (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          className="flex items-center gap-2"
-        >
-          <Check size={variant === "icon" ? 18 : 16} />
-          {showLabel && variant !== "icon" && (
-            <span>{isRtl ? "تم الإضافة" : "Added!"}</span>
-          )}
-        </motion.div>
+        <AnimatePresence>
+          <div className="flex items-center gap-2 animate-scale-in">
+            <Check size={variant === "icon" ? 18 : 16} />
+            {showLabel && variant !== "icon" && (
+              <span>{isRtl ? "تم الإضافة" : "Added!"}</span>
+            )}
+          </div>
+        </AnimatePresence>
       );
     }
 
     if (isAdding) {
       return (
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="flex items-center gap-2"
-        >
+        <div className="flex items-center gap-2 animate-spin-slow">
           <ShoppingCart size={variant === "icon" ? 18 : 16} />
           {showLabel && variant !== "icon" && (
             <span>{isRtl ? "جاري الإضافة..." : "Adding..."}</span>
           )}
-        </motion.div>
+        </div>
       );
     }
 
@@ -142,7 +131,7 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
   };
 
   return (
-    <motion.button
+    <button
       onClick={handleAddToCart}
       disabled={isAdding || justAdded}
       className={`
@@ -153,12 +142,10 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         ${
           isAdding || justAdded
             ? "cursor-not-allowed opacity-90"
-            : "hover:shadow-lg"
+            : "hover:shadow-lg hover:scale-105 active:scale-95"
         }
         ${className}
       `}
-      whileHover={!isAdding && !justAdded ? { scale: 1.05 } : {}}
-      whileTap={!isAdding && !justAdded ? { scale: 0.95 } : {}}
       aria-label={
         isRtl
           ? `إضافة ${product.nameAr} إلى عربة التسوق`
@@ -166,7 +153,7 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       }
     >
       {getButtonContent()}
-    </motion.button>
+    </button>
   );
 };
 
