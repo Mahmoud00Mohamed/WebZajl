@@ -1,4 +1,3 @@
-// src/components/home/FeaturedCollectionsSection.tsx
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -14,7 +13,6 @@ const FeaturedCollectionsSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const featuredProducts = React.useMemo(() => getSpecialGifts(), []);
 
-  // Preload featured product images
   const featuredImages = React.useMemo(
     () => featuredProducts.slice(0, 6).map((product) => product.imageUrl),
     [featuredProducts]
@@ -37,6 +35,17 @@ const FeaturedCollectionsSection: React.FC = () => {
         behavior: "smooth",
       });
     }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: index * 0.1,
+      },
+    }),
   };
 
   return (
@@ -101,9 +110,10 @@ const FeaturedCollectionsSection: React.FC = () => {
             {featuredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                custom={index}
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
                 className="flex-shrink-0 w-[calc(50%-4px)] sm:w-[calc(50%-4px)] md:w-56 h-60 md:h-72 snap-center touch-manipulation"
               >
                 <Link to={`/product/${product.id}`}>

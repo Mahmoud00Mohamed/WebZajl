@@ -406,19 +406,17 @@ const PackagesPage: React.FC = () => {
 
                 {/* Package Header */}
                 <div className="p-8 text-center">
-                  <motion.div
+                  <div
                     className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${
                       pkg.popular
                         ? "bg-gradient-to-r from-purple-500 to-pink-500"
                         : style.bg
                     }`}
-                    animate={selectedPackage === pkg.id ? { rotate: 360 } : {}}
-                    transition={{ duration: 0.6 }}
                   >
                     <div className={pkg.popular ? "text-white" : style.icon}>
                       {pkg.icon}
                     </div>
-                  </motion.div>
+                  </div>
 
                   <h3
                     className={`text-2xl font-bold mb-2 ${
@@ -695,12 +693,7 @@ const PackagesPage: React.FC = () => {
         </motion.div>
 
         {/* Custom Package CTA */}
-        <motion.div
-          className="bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 rounded-3xl shadow-2xl overflow-hidden"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-        >
+        <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 rounded-3xl shadow-2xl overflow-hidden">
           <div className="relative p-12 text-center text-white">
             {/* Background Animation */}
             <div className="absolute inset-0">
@@ -726,9 +719,9 @@ const PackagesPage: React.FC = () => {
             </div>
 
             <div className="relative z-10">
-              <motion.div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
                 <Sparkles className="w-8 h-8" />
-              </motion.div>
+              </div>
 
               <h3 className="text-3xl font-bold mb-4">
                 {t("packages.custom.title")}
@@ -752,7 +745,7 @@ const PackagesPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

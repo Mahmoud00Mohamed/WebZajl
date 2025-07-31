@@ -375,12 +375,7 @@ const NotificationsPage: React.FC = () => {
           </motion.div>
 
           {/* Form Card */}
-          <motion.div
-            className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-          >
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
             <div className="p-8">
               <form onSubmit={handleSubmit}>
                 <AnimatePresence mode="wait">
@@ -706,15 +701,10 @@ const NotificationsPage: React.FC = () => {
                 </div>
               </form>
             </div>
-          </motion.div>
+          </div>
 
           {/* Recent Notifications */}
-          <motion.div
-            className="mt-12"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-          >
+          <div className="mt-12">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
               {t("notifications.recentNotifications")}
             </h2>
@@ -777,7 +767,7 @@ const NotificationsPage: React.FC = () => {
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 

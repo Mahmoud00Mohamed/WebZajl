@@ -1,4 +1,3 @@
-// src/components/home/CategoriesSection.tsx
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -19,7 +18,6 @@ const CategoriesSection: React.FC = () => {
   const isRtl = i18n.language === "ar";
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Preload category images
   const categoryImages = React.useMemo(
     () => categories.slice(0, 8).map((category) => category.imageUrl),
     []
@@ -42,6 +40,17 @@ const CategoriesSection: React.FC = () => {
         behavior: "smooth",
       });
     }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: index * 0.1,
+      },
+    }),
   };
 
   return (
@@ -96,9 +105,10 @@ const CategoriesSection: React.FC = () => {
             {categories.map((category: Category, index) => (
               <motion.div
                 key={category.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                custom={index}
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
                 className="flex-shrink-0 w-[calc(50%-4px)] sm:w-[calc(50%-4px)] md:w-48 snap-center touch-manipulation"
               >
                 <Link to={`/category/${category.id}`}>
