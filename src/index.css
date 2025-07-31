@@ -41,7 +41,7 @@ html[dir="rtl"] body {
   }
 
   .btn {
-    @apply px-4 py-2 rounded-md transition-all duration-200 font-normal tracking-wide touch-action-manipulation;
+    @apply px-4 py-2 rounded-md transition-all duration-200 font-normal tracking-wide;
   }
 
   .btn-primary {
@@ -582,10 +582,4 @@ img {
     animation: none;
     background: #f5f5f5;
   }
-}
-
-/* Add touch-action to motion elements */
-motion div,
-motion button {
-  touch-action: manipulation;
 }
