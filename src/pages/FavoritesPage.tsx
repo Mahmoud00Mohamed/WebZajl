@@ -278,7 +278,7 @@ const FavoritesPage: React.FC = () => {
                 {t("favorites.recommendations")}
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-                {suggestedProducts.map((product, index) => (
+                {suggestedProducts.slice(0, 6).map((product) => (
                   <div
                     key={product.id}
                     className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
@@ -293,7 +293,7 @@ const FavoritesPage: React.FC = () => {
                         aspectRatio="square"
                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 160px"
                         quality={75}
-                        priority={index < 6}
+                        priority={false}
                         showZoom={false}
                         placeholderSize={24}
                         fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -741,7 +741,7 @@ const FavoritesPage: React.FC = () => {
                   {t("favorites.recommendations")}
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-                  {suggestedProducts.slice(0, 6).map((product, index) => (
+                  {suggestedProducts.slice(0, 6).map((product) => (
                     <div
                       key={product.id}
                       className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
