@@ -1,6 +1,6 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -9,11 +9,11 @@ interface ProtectedRouteProps {
   redirectTo?: string;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
-  children, 
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
   requireAuth = true,
   requirePhoneVerification = false,
-  redirectTo = '/auth/login'
+  redirectTo = "/auth/login",
 }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
   const location = useLocation();
@@ -35,15 +35,26 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (!requireAuth && isAuthenticated) {
     // إذا كان المستخدم مسجل دخول ولكن لم يتحقق من الهاتف، وجهه لصفحة إعداد الهاتف
-    if (user && !user.isPhoneVerified && location.pathname !== '/auth/phone-setup') {
+    if (
+      user &&
+      !user.isPhoneVerified &&
+      location.pathname !== "/auth/phone-setup"
+    ) {
       return <Navigate to="/auth/phone-setup" replace />;
     }
     // إذا كان في صفحة إعداد الهاتف وقد تحقق من الهاتف، وجهه للرئيسية
-    if (user && user.isPhoneVerified && location.pathname === '/auth/phone-setup') {
+    if (
+      user &&
+      user.isPhoneVerified &&
+      location.pathname === "/auth/phone-setup"
+    ) {
       return <Navigate to="/" replace />;
     }
     // إذا كان في صفحات المصادقة الأخرى وقد سجل دخول، وجهه حسب حالة التحقق من الهاتف
-    if (location.pathname.startsWith('/auth/') && location.pathname !== '/auth/phone-setup') {
+    if (
+      location.pathname.startsWith("/auth/") &&
+      location.pathname !== "/auth/phone-setup"
+    ) {
       if (user && !user.isPhoneVerified) {
         return <Navigate to="/auth/phone-setup" replace />;
       }
@@ -52,7 +63,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   // إذا كان المستخدم مسجل دخول ولكن لم يتحقق من الهاتف، وجهه لصفحة إعداد الهاتف
-  if (requireAuth && isAuthenticated && user && !user.isPhoneVerified && location.pathname !== '/auth/phone-setup') {
+  if (
+    requireAuth &&
+    isAuthenticated &&
+    user &&
+    !user.isPhoneVerified &&
+    location.pathname !== "/auth/phone-setup"
+  ) {
     return <Navigate to="/auth/phone-setup" replace />;
   }
 
