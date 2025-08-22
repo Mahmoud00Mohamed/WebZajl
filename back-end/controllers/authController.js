@@ -198,7 +198,8 @@ export const verifyEmail = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
-      message: " Email successfully verified. Please add your phone number to complete registration.",
+      message:
+        " Email successfully verified. Please add your phone number to complete registration.",
       accessToken,
       requiresPhoneSetup: !user.isPhoneVerified,
     });
@@ -206,7 +207,6 @@ export const verifyEmail = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
-
 export const requestPasswordReset = async (req, res) => {
   const { email, captchaToken } = req.body;
   try {
@@ -223,9 +223,22 @@ export const requestPasswordReset = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: " User not found." });
     }
+
     const resetToken = generateAccessToken(user._id);
-    await redis.set(`resetPassword:${user._id}`, resetToken, "EX", 10 * 60);
-    const resetLink = `${process.env.FRONTEND_URL}/authentication/reset-password?token=${resetToken}`;
+
+    // Try to store in Redis with proper error handling
+    try {
+      await redis.set(`resetPassword:${user._id}`, resetToken, "EX", 10 * 60);
+    } catch (redisError) {
+      console.warn(
+        "Redis not available for password reset:",
+        redisError.message
+      );
+      // If Redis is not available, we can still proceed by storing temporarily in user document
+      // or skip Redis storage and rely on token verification only
+    }
+
+    const resetLink = `${process.env.FRONTEND_URL}/auth/reset-password?token=${resetToken}`;
     await sendEmail({
       to: email,
       subject: "🔒 Password Reset",
@@ -235,10 +248,10 @@ export const requestPasswordReset = async (req, res) => {
 
     res.status(200).json({ message: " Reset link sent successfully." });
   } catch (err) {
+    console.error("Password reset error:", err);
     res.status(400).json({ message: err.message });
   }
 };
-
 export const resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
   try {
@@ -403,8 +416,9 @@ export const sendPhoneVerification = async (req, res) => {
   try {
     // التحقق من إعدادات Twilio
     if (!isTwilioConfigured()) {
-      return res.status(503).json({ 
-        message: "Phone verification service is currently unavailable. Please contact support." 
+      return res.status(503).json({
+        message:
+          "Phone verification service is currently unavailable. Please contact support.",
       });
     }
 
@@ -491,8 +505,9 @@ export const verifyPhoneNumber = async (req, res) => {
   try {
     // التحقق من إعدادات Twilio
     if (!isTwilioConfigured()) {
-      return res.status(503).json({ 
-        message: "Phone verification service is currently unavailable. Please contact support." 
+      return res.status(503).json({
+        message:
+          "Phone verification service is currently unavailable. Please contact support.",
       });
     }
 
@@ -552,8 +567,9 @@ export const loginWithPhone = async (req, res) => {
   try {
     // التحقق من إعدادات Twilio
     if (!isTwilioConfigured()) {
-      return res.status(503).json({ 
-        message: "Phone login service is currently unavailable. Please use email login instead." 
+      return res.status(503).json({
+        message:
+          "Phone login service is currently unavailable. Please use email login instead.",
       });
     }
 
@@ -602,8 +618,9 @@ export const verifyPhoneLogin = async (req, res) => {
   try {
     // التحقق من إعدادات Twilio
     if (!isTwilioConfigured()) {
-      return res.status(503).json({ 
-        message: "Phone verification service is currently unavailable. Please contact support." 
+      return res.status(503).json({
+        message:
+          "Phone verification service is currently unavailable. Please contact support.",
       });
     }
 

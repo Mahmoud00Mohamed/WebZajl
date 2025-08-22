@@ -8,31 +8,30 @@ dotenv.config();
 const redisUrl = process.env.REDIS_URL;
 if (!redisUrl) {
   console.warn("Warning: REDIS_URL not found, using default local Redis");
-  // Use default local Redis URL
-  const defaultRedisUrl = "redis://localhost:6379";
 }
 
 const finalRedisUrl = redisUrl || "redis://localhost:6379";
 
 //  Create a Redis client with enhanced options
 const redisClient = new Redis(finalRedisUrl, {
-  tls: finalRedisUrl.startsWith("rediss://") ? {} : undefined, // Automatically enable TLS if the URL starts with rediss://
-  connectTimeout: 5000, // 5 seconds timeout
-  lazyConnect: true, // Don't connect immediately
+  tls: finalRedisUrl.startsWith("rediss://") ? {} : undefined,
+  connectTimeout: 10000, // Increased to 10 seconds
+  lazyConnect: true,
   retryStrategy: (times) => {
     if (times > 3) {
       console.warn("Redis connection failed after 3 retries, disabling Redis");
-      return null; // Stop retrying after 3 attempts
+      return null;
     }
-    const delay = Math.min(times * 1000, 3000); // Gradual increase in delay
+    const delay = Math.min(times * 1000, 3000);
     return delay;
   },
   reconnectOnError: (err) => {
     console.warn("Redis reconnect on error:", err.message);
-    return false; // Don't auto-reconnect on error
+    return false;
   },
-  maxRetriesPerRequest: 1, // Reduce retries to fail fast
-  enableOfflineQueue: false, // Don't queue commands when disconnected
+  maxRetriesPerRequest: 3, // Increased retries
+  enableOfflineQueue: true, // Changed to true to allow queuing
+  commandTimeout: 5000, // Add command timeout
 });
 
 //  Log Redis events for improved monitoring
@@ -51,6 +50,11 @@ redisClient.on("error", (err) => {
 redisClient.on("end", () => {
   console.log("Redis connection ended");
 });
+
+// Add connection check method
+redisClient.isReady = () => {
+  return redisClient.status === "ready";
+};
 
 //  Export the client
 export default redisClient;
