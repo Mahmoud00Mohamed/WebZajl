@@ -149,11 +149,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       formData.append("file", file);
       formData.append("signature", signature);
       formData.append("timestamp", timestamp.toString());
-      formData.append("api_key", process.env.VITE_CLOUDINARY_API_KEY || "");
+      formData.append("api_key", import.meta.env.VITE_CLOUDINARY_API_KEY || "");
       formData.append("folder", "profile_pictures");
 
       const uploadResponse = await fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+        }/image/upload`,
         {
           method: "POST",
           body: formData,

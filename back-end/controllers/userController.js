@@ -41,11 +41,9 @@ export const updateUser = async (req, res) => {
       }
       const existingUser = await User.findOne({ phoneNumber });
       if (existingUser && existingUser._id.toString() !== req.user.userId) {
-        return res
-          .status(400)
-          .json({
-            message: "Phone number is already associated with another account.",
-          });
+        return res.status(400).json({
+          message: "Phone number is already associated with another account.",
+        });
       }
       // إذا كان المستخدم يريد تغيير رقم هاتف موثق، يجب إعادة التحقق
       if (user.isPhoneVerified && user.phoneNumber) {
