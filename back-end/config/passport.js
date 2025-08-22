@@ -17,9 +17,21 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        console.log("Google OAuth profile received:", profile.id);
+
+        // التحقق من وجود البيانات المطلوبة
+        if (!profile.emails || !profile.emails[0] || !profile.emails[0].value) {
+          console.error("No email found in Google profile");
+          return done(new Error("No email found in Google profile"), null);
+        }
+
+        const email = profile.emails[0].value;
+        console.log("Looking for user with email:", email);
+
         let user = await User.findOne({ email: profile.emails[0].value });
 
         if (!user) {
+          console.log("Creating new user from Google profile");
           user = new User({
             name:
               profile.displayName ||
@@ -34,10 +46,20 @@ passport.use(
             googleId: profile.id,
           });
           await user.save();
+          console.log("New user created:", user._id);
+        } else {
+          console.log("Existing user found:", user._id);
+          // تحديث Google ID إذا لم يكن موجوداً
+          if (!user.googleId) {
+            user.googleId = profile.id;
+            await user.save();
+            console.log("Google ID updated for existing user");
+          }
         }
 
         return done(null, user);
       } catch (err) {
+        console.error("Google OAuth strategy error:", err);
         return done(err, null);
       }
     }

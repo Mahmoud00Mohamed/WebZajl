@@ -31,6 +31,7 @@ const UserSchema = new mongoose.Schema(
     isPhoneVerified: { type: Boolean, default: false },
     phoneVerificationAttempts: { type: Number, default: 0 },
     lastPhoneVerificationTime: { type: Date },
+    refreshToken: { type: String }, // Fallback for when Redis is not available
   },
   { timestamps: true }
 );

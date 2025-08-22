@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useFavorites } from "../../context/FavoritesContext";
+import { useAuth } from "../../context/AuthContext";
 import i18n from "i18next";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import Logo from "../ui/Logo";
@@ -23,7 +24,9 @@ const Header = () => {
   const { t } = useTranslation();
   const { cartCount } = useCart();
   const { favoritesCount } = useFavorites();
+  const { user, isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -130,13 +133,62 @@ const Header = () => {
             </Link>
 
             {/* Login */}
-            <Link
-              to="/login"
-              className="hidden sm:flex items-center text-gray-600 transition-colors group"
-            >
-              <User size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
-              <span className="text-sm font-bold">{t("header.login")}</span>
-            </Link>
+            {isAuthenticated ? (
+              <div className="relative hidden sm:block">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center text-gray-600 transition-colors group"
+                >
+                  {user?.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt={user.name}
+                      className="w-8 h-8 rounded-full object-cover mr-2 rtl:ml-2 rtl:mr-0"
+                    />
+                  ) : (
+                    <User size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
+                  )}
+                  <span className="text-sm font-bold">{user?.name}</span>
+                </button>
+                
+                {showUserMenu && (
+                  <div className="absolute top-full right-0 rtl:left-0 rtl:right-auto mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      {t("header.profile")}
+                    </Link>
+                    <Link
+                      to="/orders"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      {t("header.orders")}
+                    </Link>
+                    <hr className="my-2" />
+                    <button
+                      onClick={() => {
+                        logout();
+                        setShowUserMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      {t("header.logout")}
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                to="/auth/login"
+                className="hidden sm:flex items-center text-gray-600 transition-colors group"
+              >
+                <User size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
+                <span className="text-sm font-bold">{t("header.login")}</span>
+              </Link>
+            )}
 
             {/* Cart */}
             <Link
@@ -340,6 +392,43 @@ const Header = () => {
                   {t("bottomNav.packages")}
                 </Link>
               </li>
+              {!isAuthenticated && (
+                <li className="pt-4 border-t border-gray-100">
+                  <Link
+                    to="/auth/login"
+                    className="flex items-center py-2 text-gray-600 transition-colors font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <User size={18} className="mr-2 rtl:ml-2 rtl:mr-0" />
+                    {t("header.login")}
+                  </Link>
+                </li>
+              )}
+              {isAuthenticated && (
+                <>
+                  <li className="pt-4 border-t border-gray-100">
+                    <Link
+                      to="/profile"
+                      className="flex items-center py-2 text-gray-600 transition-colors font-bold"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <User size={18} className="mr-2 rtl:ml-2 rtl:mr-0" />
+                      {user?.name || t("header.profile")}
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex items-center py-2 text-red-600 transition-colors font-bold w-full text-left"
+                    >
+                      {t("header.logout")}
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>

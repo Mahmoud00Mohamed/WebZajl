@@ -21,7 +21,10 @@
     "search": "What are you looking for?",
     "deliveryTo": "Delivery To",
     "login": "Login",
-    "basket": "Basket"
+    "basket": "Basket",
+    "profile": "Profile",
+    "orders": "My Orders",
+    "logout": "Logout"
   },
   "home": {
     "hero": {
@@ -264,5 +267,147 @@
     "time": "Delivery Time",
     "process": "Delivery Process",
     "contactYou": "Contact Us for More Information"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back",
+      "email": "Email Address",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign In",
+      "signInWithGoogle": "Continue with Google",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "phoneLogin": "Login with Phone",
+      "emailLogin": "Login with Email"
+    },
+    "signup": {
+      "title": "Create Account",
+      "subtitle": "Join us today",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "createAccount": "Create Account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "agreeToTerms": "I agree to the Terms & Conditions and Privacy Policy",
+      "passwordStrength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      }
+    },
+    "verification": {
+      "email": {
+        "title": "Verify Your Email",
+        "subtitle": "We sent a verification code to",
+        "code": "Verification Code",
+        "verify": "Verify Code",
+        "resend": "Resend Code",
+        "didntReceive": "Didn't receive the code?",
+        "changeEmail": "Want to change email?",
+        "backToSignup": "Back to signup"
+      },
+      "phone": {
+        "title": "Verify Phone Number",
+        "subtitle": "We sent a verification code to",
+        "code": "Verification Code",
+        "verify": "Verify Code",
+        "resend": "Resend Code",
+        "didntReceive": "Didn't receive the code?"
+      }
+    },
+    "forgotPassword": {
+      "title": "Forgot Password?",
+      "subtitle": "Don't worry, we'll send you a reset link",
+      "email": "Email Address",
+      "sendLink": "Send Reset Link",
+      "linkSent": "Link Sent",
+      "checkEmail": "A password reset link has been sent to your email",
+      "backToLogin": "Back to login"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your new password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "updatePassword": "Update Password",
+      "passwordsNotMatch": "Passwords do not match"
+    },
+    "google": {
+      "processing": "Processing...",
+      "success": "Successfully Signed In",
+      "error": "Authentication Failed",
+      "welcome": "Welcome! You will be redirected to the homepage"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "accountSettings": "Account Settings",
+    "security": "Security",
+    "fullName": "Full Name",
+    "username": "Username",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "profilePicture": "Profile Picture",
+    "updateProfile": "Update Profile",
+    "changePassword": "Change Password",
+    "updateEmail": "Update Email",
+    "deleteAccount": "Delete Account",
+    "verified": "Verified",
+    "notVerified": "Not Verified",
+    "memberSince": "Member Since",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "newEmail": "New Email Address",
+    "verificationCode": "Verification Code",
+    "sendVerificationCode": "Send Verification Code",
+    "verifyCode": "Verify Code",
+    "updatePassword": "Update Password",
+    "updateEmail": "Update Email",
+    "deleteAccountPermanently": "Delete Account Permanently",
+    "typeDeleteToConfirm": "Type DELETE to confirm",
+    "passwordStrength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    }
+  },
+  "orders": {
+    "title": "My Orders",
+    "description": "Track and manage your orders",
+    "orderNumber": "Order Number",
+    "orderDate": "Order Date",
+    "status": "Status",
+    "total": "Total",
+    "items": "Items",
+    "shippingInfo": "Shipping Information",
+    "trackingNumber": "Tracking Number",
+    "viewDetails": "View Details",
+    "trackOrder": "Track Order",
+    "cancelOrder": "Cancel Order",
+    "rateOrder": "Rate Order",
+    "noOrders": "No Orders Found",
+    "noOrdersDescription": "You haven't placed any orders yet. Start shopping now!",
+    "startShopping": "Start Shopping",
+    "searchOrders": "Search orders...",
+    "allOrders": "All Orders",
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
   }
 }

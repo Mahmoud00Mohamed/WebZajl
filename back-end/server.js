@@ -47,6 +47,7 @@ const allowedOrigins = [
   "http://localhost:3001",
   "https://localhost:3002",
   "http://localhost:3002",
+  "https://localhost:5173",
 ];
 
 const corsOptions = {
@@ -75,7 +76,25 @@ app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+// إعداد session middleware لـ Passport (مطلوب لـ Google OAuth)
+import session from "express-session";
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "fallback-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
 app.use(passport.initialize());
+app.use(passport.session());
 
 // 🧭 Routes
 app.use("/api/auth", authRoutes);

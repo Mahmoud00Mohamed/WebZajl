@@ -25,17 +25,37 @@ export const googleAuth = passport.authenticate("google", {
 // رد الاتصال بعد المصادقة مع Google
 export const googleAuthCallback = async (req, res) => {
   try {
+    // التحقق من وجود المستخدم في req.user
+    if (!req.user) {
+      console.error("No user found in request after Google authentication");
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/auth/login?error=authentication_failed`
+      );
+    }
+
     const user = req.user;
+    console.log("Google OAuth user:", user._id);
+
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
-    // تخزين refreshToken في Redis
-    await redis.set(
-      `refreshToken:${user._id}`,
-      refreshToken,
-      "EX",
-      30 * 24 * 60 * 60
-    );
+    // تخزين refreshToken في Redis مع fallback
+    try {
+      await redis.set(
+        `refreshToken:${user._id}`,
+        refreshToken,
+        "EX",
+        30 * 24 * 60 * 60
+      );
+      console.log("Refresh token stored in Redis successfully");
+    } catch (redisError) {
+      console.warn(
+        "Redis not available, storing refresh token in user document"
+      );
+      // Fallback: store in user document
+      user.refreshToken = refreshToken;
+      await user.save();
+    }
 
     // إعداد الكوكيز
     res.cookie("refreshToken", refreshToken, {
@@ -44,12 +64,15 @@ export const googleAuthCallback = async (req, res) => {
       sameSite: "None",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
+
+    console.log("Redirecting to frontend with access token");
     // إعادة التوجيه إلى الواجهة الأمامية مع الـ accessToken
     res.redirect(
-      `${process.env.FRONTEND_URL}/authentication/callback.html?accessToken=${accessToken}`
+      `${process.env.FRONTEND_URL}/auth/google/callback?accessToken=${accessToken}`
     );
   } catch (err) {
-    res.status(500).json({ message: " Error during Google authentication." });
+    console.error("Google OAuth callback error:", err);
+    res.redirect(`${process.env.FRONTEND_URL}/auth/login?error=server_error`);
   }
 };
 
@@ -107,12 +130,23 @@ export const login = async (req, res) => {
 
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
-    await redis.set(
-      `refreshToken:${user._id}`,
-      refreshToken,
-      "EX",
-      30 * 24 * 60 * 60
-    );
+
+    // تخزين refreshToken مع fallback
+    try {
+      await redis.set(
+        `refreshToken:${user._id}`,
+        refreshToken,
+        "EX",
+        30 * 24 * 60 * 60
+      );
+    } catch (redisError) {
+      console.warn(
+        "Redis not available, storing refresh token in user document"
+      );
+      user.refreshToken = refreshToken;
+      await user.save();
+    }
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: !0,
       secure: !0,
@@ -140,12 +174,23 @@ export const verifyEmail = async (req, res) => {
     await user.save();
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
-    await redis.set(
-      `refreshToken:${user._id}`,
-      refreshToken,
-      "EX",
-      30 * 24 * 60 * 60
-    );
+
+    // تخزين refreshToken مع fallback
+    try {
+      await redis.set(
+        `refreshToken:${user._id}`,
+        refreshToken,
+        "EX",
+        30 * 24 * 60 * 60
+      );
+    } catch (redisError) {
+      console.warn(
+        "Redis not available, storing refresh token in user document"
+      );
+      user.refreshToken = refreshToken;
+      await user.save();
+    }
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: !0,
       secure: !0,
@@ -162,8 +207,17 @@ export const verifyEmail = async (req, res) => {
 };
 
 export const requestPasswordReset = async (req, res) => {
-  const { email } = req.body;
+  const { email, captchaToken } = req.body;
   try {
+    // Verify CAPTCHA if provided
+    if (captchaToken && captchaToken !== "dummy-captcha-token") {
+      if (!(await verifyCaptcha(captchaToken))) {
+        return res
+          .status(400)
+          .json({ message: " CAPTCHA verification failed." });
+      }
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: " User not found." });
@@ -219,7 +273,21 @@ export const logout = async (req, res) => {
     } catch (err) {
       return res.status(401).json({ message: " Invalid Refresh Token." });
     }
-    await redis.del(`refreshToken:${decoded.userId}`);
+
+    // حذف الـ refresh token مع fallback
+    try {
+      await redis.del(`refreshToken:${decoded.userId}`);
+    } catch (redisError) {
+      console.warn(
+        "Redis not available, clearing refresh token from user document"
+      );
+      const user = await User.findById(decoded.userId);
+      if (user) {
+        user.refreshToken = undefined;
+        await user.save();
+      }
+    }
+
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: true,
@@ -273,21 +341,46 @@ export const refreshAccessToken = async (req, res) => {
         .status(401)
         .json({ message: "Invalid or expired Refresh Token." });
     }
-    const storedToken = await redis.get(`refreshToken:${decoded.userId}`);
+
+    // التحقق من الـ refresh token مع fallback
+    let storedToken = null;
+    try {
+      storedToken = await redis.get(`refreshToken:${decoded.userId}`);
+    } catch (redisError) {
+      console.warn("Redis not available, checking user document");
+      const user = await User.findById(decoded.userId);
+      storedToken = user?.refreshToken;
+    }
+
     if (!storedToken || storedToken !== refreshToken) {
-      console.log("Stored token mismatch or not found in Redis");
+      console.log("Stored token mismatch or not found");
       return res
         .status(401)
         .json({ message: "Invalid or expired Refresh Token." });
     }
+
     const newAccessToken = generateAccessToken(decoded.userId);
     const newRefreshToken = generateRefreshToken(decoded.userId);
-    await redis.set(
-      `refreshToken:${decoded.userId}`,
-      newRefreshToken,
-      "EX",
-      30 * 24 * 60 * 60
-    );
+
+    // تخزين الـ refresh token الجديد مع fallback
+    try {
+      await redis.set(
+        `refreshToken:${decoded.userId}`,
+        newRefreshToken,
+        "EX",
+        30 * 24 * 60 * 60
+      );
+    } catch (redisError) {
+      console.warn(
+        "Redis not available, storing refresh token in user document"
+      );
+      const user = await User.findById(decoded.userId);
+      if (user) {
+        user.refreshToken = newRefreshToken;
+        await user.save();
+      }
+    }
+
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
       secure: true,
@@ -326,11 +419,9 @@ export const sendPhoneVerification = async (req, res) => {
     // التحقق من عدم ارتباط الرقم بحساب آخر
     const existingUser = await User.findOne({ phoneNumber });
     if (existingUser && existingUser._id.toString() !== userId) {
-      return res
-        .status(400)
-        .json({
-          message: "Phone number is already associated with another account.",
-        });
+      return res.status(400).json({
+        message: "Phone number is already associated with another account.",
+      });
     }
 
     // تطبيق معدل المحاولات
@@ -508,12 +599,21 @@ export const verifyPhoneLogin = async (req, res) => {
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
-    await redis.set(
-      `refreshToken:${user._id}`,
-      refreshToken,
-      "EX",
-      30 * 24 * 60 * 60
-    );
+    // تخزين refreshToken مع fallback
+    try {
+      await redis.set(
+        `refreshToken:${user._id}`,
+        refreshToken,
+        "EX",
+        30 * 24 * 60 * 60
+      );
+    } catch (redisError) {
+      console.warn(
+        "Redis not available, storing refresh token in user document"
+      );
+      user.refreshToken = refreshToken;
+      await user.save();
+    }
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,

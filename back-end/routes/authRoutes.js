@@ -45,7 +45,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "/login",
+    failureRedirect: `${process.env.FRONTEND_URL}/auth/login?error=google_auth_failed`,
   }),
   googleAuthCallback // رد الاتصال بعد المصادقة
 );
