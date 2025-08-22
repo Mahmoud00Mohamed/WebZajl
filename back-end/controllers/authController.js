@@ -15,6 +15,12 @@ import { verifyCaptcha } from "../utils/captchaUtils.js";
 import redis from "../config/redisClient.js";
 import passport from "../config/passport.js"; // استيراد Passport
 import { sendOTP, verifyOTP, isTwilioConfigured } from "../config/twilio.js";
+import {
+  hashVerificationCode,
+  verifyVerificationCode,
+  generateVerificationCode,
+  generateHexVerificationCode,
+} from "../utils/authUtils.js";
 dotenv.config();
 
 // تهيئة تسجيل الدخول بـ Google
@@ -91,12 +97,12 @@ export const signup = async (req, res) => {
     return res.status(400).json({ message: " CAPTCHA verification failed." });
   }
   try {
-    const verificationCode = crypto.randomBytes(3).toString("hex");
+    const verificationCode = generateHexVerificationCode();
     const user = new User({
       name,
       email,
       password,
-      verificationCode: await hashPassword(verificationCode),
+      verificationCode: await hashVerificationCode(verificationCode),
     });
     await user.save();
     await sendEmail({
@@ -165,7 +171,7 @@ export const verifyEmail = async (req, res) => {
     const user = await User.findOne({ email });
     if (
       !user ||
-      !(await verifyPassword(verificationCode, user.verificationCode))
+      !(await verifyVerificationCode(verificationCode, user.verificationCode))
     ) {
       return res.status(400).json({ message: " Invalid verification code." });
     }
@@ -320,10 +326,8 @@ export const resendCode = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found." });
     }
-    const verificationCode = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
-    user.verificationCode = await hashPassword(verificationCode);
+    const verificationCode = generateVerificationCode();
+    user.verificationCode = await hashVerificationCode(verificationCode);
     await user.save();
     await sendEmail({
       to: email,

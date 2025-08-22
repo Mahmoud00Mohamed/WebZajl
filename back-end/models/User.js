@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
 import validator from "validator";
+import { hashPassword, verifyPassword } from "../config/auth.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -102,8 +102,8 @@ const transliterateArabic = (text) =>
     .join("");
 
 UserSchema.pre("save", async function (next) {
-  if (this.isModified("password") && !this.password.startsWith("$2a$")) {
-    this.password = await bcrypt.hash(this.password, 12);
+  if (this.isModified("password") && !this.password.startsWith("$2b$")) {
+    this.password = await hashPassword(this.password);
   }
   if (!this.username) {
     const randomNum = Math.floor(1000 + Math.random() * 9000);
@@ -125,7 +125,7 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.methods.comparePassword = function (password) {
-  return bcrypt.compare(password, this.password);
+  return verifyPassword(password, this.password);
 };
 
 UserSchema.statics.emailExists = function (email) {

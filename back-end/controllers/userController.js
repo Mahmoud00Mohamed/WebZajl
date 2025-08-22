@@ -1,11 +1,12 @@
 import User from "../models/User.js";
-import bcrypt from "bcryptjs";
 import sendEmail from "../utils/sendEmail.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import TokenBlacklist from "../models/TokenBlacklist.js";
 import cloudinary from "../utils/cloudinary.js";
+import { verifyPassword, hashPassword } from "../config/auth.js";
+import { generateVerificationCode } from "../utils/authUtils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -130,10 +131,10 @@ export const updatePassword = async (req, res) => {
       return res
         .status(400)
         .json({ error: "Password must be at least 6 characters long." });
-    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    const isMatch = await verifyPassword(oldPassword, user.password);
     if (!isMatch)
       return res.status(400).json({ error: "The old password is incorrect." });
-    user.password = await bcrypt.hash(newPassword, 12);
+    user.password = await hashPassword(newPassword);
     await user.save();
     res.status(200).json({ message: "Password updated successfully." });
   } catch (err) {
@@ -169,9 +170,7 @@ export const requestEmailUpdate = async (req, res) => {
         });
       }
     }
-    user.emailVerificationCode = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
+    user.emailVerificationCode = generateVerificationCode();
     user.newEmail = newEmail;
     user.emailRequestAttempts = Math.min(
       user.emailRequestAttempts + 1,
@@ -202,7 +201,7 @@ export const verifyEmailUpdate = async (req, res) => {
       return res.status(400).json({ message: "No email update requested." });
     if (user.emailVerificationCode !== verificationCode)
       return res.status(400).json({ message: "Invalid verification code." });
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await verifyPassword(password, user.password);
     if (!isPasswordValid)
       return res.status(400).json({ message: "Incorrect password." });
     user.email = user.newEmail;
@@ -228,7 +227,7 @@ export const deleteUser = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found." });
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await verifyPassword(password, user.password);
     if (!isPasswordValid)
       return res.status(401).json({ message: "Incorrect password." });
 

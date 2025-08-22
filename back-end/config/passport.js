@@ -39,9 +39,7 @@ passport.use(
                 profile.name.familyName || "Google"
               }`,
             email: profile.emails[0].value,
-            password: await hashPassword(
-              crypto.randomBytes(16).toString("hex")
-            ),
+            password: crypto.randomBytes(16).toString("hex"), // سيتم تشفيرها تلقائياً في pre-save hook
             isVerified: true,
             googleId: profile.id,
           });

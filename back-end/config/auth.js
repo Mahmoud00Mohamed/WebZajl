@@ -51,7 +51,8 @@ export const verifyToken = (token) => {
  * تشفير كلمة المرور باستخدام bcrypt
  */
 export const hashPassword = async (password) => {
-  return await bcrypt.hash(password, 12);
+  const saltRounds = 12;
+  return await bcrypt.hash(password, saltRounds);
 };
 
 /**
