@@ -5,15 +5,17 @@ import { useAuth } from '../../context/AuthContext';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requireAuth?: boolean;
+  requirePhoneVerification?: boolean;
   redirectTo?: string;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
   children, 
   requireAuth = true,
+  requirePhoneVerification = false,
   redirectTo = '/auth/login'
 }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
@@ -32,7 +34,31 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (!requireAuth && isAuthenticated) {
-    return <Navigate to="/" replace />;
+    // إذا كان المستخدم مسجل دخول ولكن لم يتحقق من الهاتف، وجهه لصفحة إعداد الهاتف
+    if (user && !user.isPhoneVerified && location.pathname !== '/auth/phone-setup') {
+      return <Navigate to="/auth/phone-setup" replace />;
+    }
+    // إذا كان في صفحة إعداد الهاتف وقد تحقق من الهاتف، وجهه للرئيسية
+    if (user && user.isPhoneVerified && location.pathname === '/auth/phone-setup') {
+      return <Navigate to="/" replace />;
+    }
+    // إذا كان في صفحات المصادقة الأخرى وقد سجل دخول، وجهه حسب حالة التحقق من الهاتف
+    if (location.pathname.startsWith('/auth/') && location.pathname !== '/auth/phone-setup') {
+      if (user && !user.isPhoneVerified) {
+        return <Navigate to="/auth/phone-setup" replace />;
+      }
+      return <Navigate to="/" replace />;
+    }
+  }
+
+  // إذا كان المستخدم مسجل دخول ولكن لم يتحقق من الهاتف، وجهه لصفحة إعداد الهاتف
+  if (requireAuth && isAuthenticated && user && !user.isPhoneVerified && location.pathname !== '/auth/phone-setup') {
+    return <Navigate to="/auth/phone-setup" replace />;
+  }
+
+  // إذا كان يتطلب التحقق من الهاتف وليس متحقق
+  if (requirePhoneVerification && user && !user.isPhoneVerified) {
+    return <Navigate to="/auth/phone-setup" replace />;
   }
 
   return <>{children}</>;

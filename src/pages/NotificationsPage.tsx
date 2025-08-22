@@ -572,7 +572,7 @@ const NotificationsPage: React.FC = () => {
                               value={form.recipientPhone}
                               onChange={handleChange}
                               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-green-500/20 focus:border-green-500 transition-all duration-300 bg-white/50"
-                              placeholder="+20 123 456 789"
+                              placeholder="+966 50 123 4567"
                               required
                             />
                           </motion.div>

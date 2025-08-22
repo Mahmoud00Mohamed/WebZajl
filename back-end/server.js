@@ -13,6 +13,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import passport from "./config/passport.js";
+import { printServiceStatus } from "./utils/serviceChecker.js";
 
 dotenv.config();
 
@@ -107,4 +108,5 @@ const server = https.createServer(sslOptions, app);
 const PORT = process.env.PORT || 3002;
 server.listen(PORT, () => {
   console.log(`🚀 HTTPS Server running on https://localhost:${PORT}`);
+  printServiceStatus();
 });

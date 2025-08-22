@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useContext,
   useState,
@@ -35,7 +35,7 @@ interface AuthContextType {
   ) => Promise<void>;
   logout: () => Promise<void>;
   verifyEmail: (email: string, verificationCode: string) => Promise<void>;
-  requestPasswordReset: (email: string) => Promise<void>;
+  requestPasswordReset: (email: string, captchaToken: string) => Promise<void>;
   resetPassword: (token: string, newPassword: string) => Promise<void>;
   resendCode: (email: string) => Promise<void>;
   refreshToken: () => Promise<void>;
@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Check if user is authenticated on app load
   useEffect(() => {
     checkAuthStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkAuthStatus = async () => {
@@ -414,6 +415,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

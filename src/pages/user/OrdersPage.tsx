@@ -78,7 +78,7 @@ const OrdersPage: React.FC = () => {
         ],
         shippingAddress: {
           name: isRtl ? "أحمد محمد" : "Ahmed Mohamed",
-          phone: "+966501234567",
+          phone: "+966 50 123 4567",
           address: isRtl
             ? "شارع الملك فهد، الرياض"
             : "King Fahd Street, Riyadh",
@@ -104,7 +104,7 @@ const OrdersPage: React.FC = () => {
         ],
         shippingAddress: {
           name: isRtl ? "فاطمة علي" : "Fatima Ali",
-          phone: "+966507654321",
+          phone: "+966 50 765 4321",
           address: isRtl ? "حي النخيل، جدة" : "Al Nakheel District, Jeddah",
           city: isRtl ? "جدة" : "Jeddah",
         },

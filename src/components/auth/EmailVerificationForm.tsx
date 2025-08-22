@@ -40,7 +40,8 @@ const EmailVerificationForm: React.FC = () => {
 
     try {
       await verifyEmail(email, verificationCode);
-      navigate("/");
+      // بعد تأكيد البريد الإلكتروني، انتقل إلى صفحة إعداد الهاتف
+      navigate("/auth/phone-setup");
     } catch (error) {
       console.error("Verification error:", error);
     } finally {

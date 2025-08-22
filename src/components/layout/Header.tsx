@@ -28,6 +28,9 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
+  // Add this line to define isRtl
+  const isRtl = i18n.language === "ar";
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -149,10 +152,33 @@ const Header = () => {
                     <User size={20} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
                   )}
                   <span className="text-sm font-bold">{user?.name}</span>
+                  {user && !user.isPhoneVerified && (
+                    <div
+                      className="w-2 h-2 bg-yellow-500 rounded-full ml-2 rtl:mr-2 rtl:ml-0"
+                      title={
+                        isRtl
+                          ? "يتطلب التحقق من الهاتف"
+                          : "Phone verification required"
+                      }
+                    ></div>
+                  )}
                 </button>
-                
+
                 {showUserMenu && (
                   <div className="absolute top-full right-0 rtl:left-0 rtl:right-auto mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    {user && !user.isPhoneVerified && (
+                      <>
+                        <Link
+                          to="/auth/phone-setup"
+                          className="block px-4 py-2 text-sm text-yellow-700 bg-yellow-50 hover:bg-yellow-100 transition-colors border-b border-yellow-200"
+                          onClick={() => setShowUserMenu(false)}
+                        >
+                          {isRtl
+                            ? "أكمل التحقق من الهاتف"
+                            : "Complete Phone Verification"}
+                        </Link>
+                      </>
+                    )}
                     <Link
                       to="/profile"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"

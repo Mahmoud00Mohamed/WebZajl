@@ -46,6 +46,7 @@ const PhoneVerificationPage = lazy(
 const PhoneLoginVerificationPage = lazy(
   () => import("./pages/auth/PhoneLoginVerificationPage")
 );
+const PhoneSetupPage = lazy(() => import("./pages/auth/PhoneSetupPage"));
 const GoogleCallbackPage = lazy(
   () => import("./pages/auth/GoogleCallbackPage")
 );
@@ -183,6 +184,14 @@ function App() {
                         }
                       />
                       <Route
+                        path="/auth/phone-setup"
+                        element={
+                          <ProtectedRoute>
+                            <PhoneSetupPage />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
                         path="/auth/verify-phone-login"
                         element={
                           <ProtectedRoute requireAuth={false}>
@@ -199,7 +208,7 @@ function App() {
                       <Route
                         path="/profile"
                         element={
-                          <ProtectedRoute>
+                          <ProtectedRoute requirePhoneVerification={true}>
                             <ProfilePage />
                           </ProtectedRoute>
                         }
@@ -207,7 +216,7 @@ function App() {
                       <Route
                         path="/orders"
                         element={
-                          <ProtectedRoute>
+                          <ProtectedRoute requirePhoneVerification={true}>
                             <OrdersPage />
                           </ProtectedRoute>
                         }

@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 import { verifyCaptcha } from "../utils/captchaUtils.js";
 import redis from "../config/redisClient.js";
 import passport from "../config/passport.js"; // استيراد Passport
-import { sendOTP, verifyOTP } from "../config/twilio.js";
+import { sendOTP, verifyOTP, isTwilioConfigured } from "../config/twilio.js";
 dotenv.config();
 
 // تهيئة تسجيل الدخول بـ Google
@@ -198,8 +198,9 @@ export const verifyEmail = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
-      message: " Email successfully verified.",
+      message: " Email successfully verified. Please add your phone number to complete registration.",
       accessToken,
+      requiresPhoneSetup: !user.isPhoneVerified,
     });
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -400,6 +401,13 @@ export const sendPhoneVerification = async (req, res) => {
   const { phoneNumber } = req.body;
 
   try {
+    // التحقق من إعدادات Twilio
+    if (!isTwilioConfigured()) {
+      return res.status(503).json({ 
+        message: "Phone verification service is currently unavailable. Please contact support." 
+      });
+    }
+
     const userId = req.user.userId;
     const user = await User.findById(userId);
 
@@ -407,14 +415,19 @@ export const sendPhoneVerification = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    if (user.isPhoneVerified) {
-      return res
-        .status(400)
-        .json({ message: "Phone number already verified." });
-    }
+    // السماح بإعادة التحقق إذا لم يكن الهاتف موثقاً
+    // if (user.isPhoneVerified) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Phone number already verified." });
+    // }
 
     // التحقق من صحة رقم الهاتف
-    User.isValidPhoneNumber(phoneNumber);
+    try {
+      User.isValidPhoneNumber(phoneNumber);
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
 
     // التحقق من عدم ارتباط الرقم بحساب آخر
     const existingUser = await User.findOne({ phoneNumber });
@@ -476,6 +489,13 @@ export const verifyPhoneNumber = async (req, res) => {
   const { code } = req.body;
 
   try {
+    // التحقق من إعدادات Twilio
+    if (!isTwilioConfigured()) {
+      return res.status(503).json({ 
+        message: "Phone verification service is currently unavailable. Please contact support." 
+      });
+    }
+
     const userId = req.user.userId;
     const user = await User.findById(userId);
 
@@ -530,8 +550,19 @@ export const loginWithPhone = async (req, res) => {
   const { phoneNumber } = req.body;
 
   try {
+    // التحقق من إعدادات Twilio
+    if (!isTwilioConfigured()) {
+      return res.status(503).json({ 
+        message: "Phone login service is currently unavailable. Please use email login instead." 
+      });
+    }
+
     // التحقق من صحة رقم الهاتف
-    User.isValidPhoneNumber(phoneNumber);
+    try {
+      User.isValidPhoneNumber(phoneNumber);
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
 
     // البحث عن المستخدم
     const user = await User.findOne({ phoneNumber });
@@ -569,8 +600,19 @@ export const verifyPhoneLogin = async (req, res) => {
   const { phoneNumber, code } = req.body;
 
   try {
+    // التحقق من إعدادات Twilio
+    if (!isTwilioConfigured()) {
+      return res.status(503).json({ 
+        message: "Phone verification service is currently unavailable. Please contact support." 
+      });
+    }
+
     // التحقق من صحة رقم الهاتف
-    User.isValidPhoneNumber(phoneNumber);
+    try {
+      User.isValidPhoneNumber(phoneNumber);
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
 
     // البحث عن المستخدم
     const user = await User.findOne({ phoneNumber });

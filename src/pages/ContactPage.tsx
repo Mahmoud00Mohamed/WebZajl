@@ -61,7 +61,7 @@ const ContactPage: React.FC = () => {
                   <h3 className="font-medium">
                     {isArabic ? "الهاتف" : "Phone"}
                   </h3>
-                  <p className="text-gray-600">+20 123 456 789</p>
+                  <p className="text-gray-600">+966 50 123 4567</p>
                 </div>
               </div>
 

@@ -140,11 +140,11 @@ UserSchema.statics.usernameExists = function (username) {
  * التحقق من صحة رقم الهاتف
  */
 UserSchema.statics.isValidPhoneNumber = function (phoneNumber) {
-  // التحقق من الصيغة الدولية
-  const phoneRegex = /^\+[1-9]\d{1,14}$/;
+  // التحقق من الصيغة السعودية فقط
+  const phoneRegex = /^\+966[5][0-9]{8}$/;
   if (!phoneRegex.test(phoneNumber)) {
     throw new Error(
-      "Phone number must be in international format (e.g., +966xxxxxxxxx)"
+      "Phone number must be a valid Saudi number (e.g., +966501234567)"
     );
   }
   return true;

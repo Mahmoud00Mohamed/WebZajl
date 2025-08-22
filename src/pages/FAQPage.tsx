@@ -22,9 +22,9 @@ const FAQPage: React.FC = () => {
       questionEn: "What are your delivery hours?",
       questionAr: "ما هي ساعات التوصيل لديكم؟",
       answerEn:
-        "We deliver from 9 AM to 10 PM every day. For special occasions like Eid, we extend our delivery hours.",
+        "We deliver from 9 AM to 10 PM every day across Saudi Arabia. For special occasions like Eid, we extend our delivery hours.",
       answerAr:
-        "نقوم بالتوصيل من 9 صباحًا حتى 10 مساءً كل يوم. في المناسبات الخاصة مثل العيد، نقوم بتمديد ساعات التوصيل.",
+        "نقوم بالتوصيل من 9 صباحًا حتى 10 مساءً كل يوم في جميع أنحاء السعودية. في المناسبات الخاصة مثل العيد، نقوم بتمديد ساعات التوصيل.",
     },
     {
       questionEn: "Can I modify or cancel my order?",

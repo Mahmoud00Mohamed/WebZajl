@@ -34,7 +34,11 @@ export const updateUser = async (req, res) => {
     }
     if (phoneNumber && phoneNumber !== user.phoneNumber) {
       // التحقق من أن الرقم الجديد غير مرتبط بحساب آخر
-      User.isValidPhoneNumber(phoneNumber);
+      try {
+        User.isValidPhoneNumber(phoneNumber);
+      } catch (error) {
+        return res.status(400).json({ message: error.message });
+      }
       const existingUser = await User.findOne({ phoneNumber });
       if (existingUser && existingUser._id.toString() !== req.user.userId) {
         return res

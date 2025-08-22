@@ -260,7 +260,7 @@
     "quickLinks": "روابط سريعة",
     "legal": "معلومات قانونية",
     "contactUs": "تواصل معنا",
-    "location": "القاهرة، مصر"
+    "location": "الرياض، المملكة العربية السعودية"
   },
   "delivery": {
     "locations": "مناطق التوصيل",
@@ -319,6 +319,22 @@
         "verify": "تحقق من الرمز",
         "resend": "إعادة إرسال الرمز",
         "didntReceive": "لم تستلم الرمز؟"
+      },
+      "phoneSetup": {
+        "title": "أضف رقم هاتفك",
+        "subtitle": "لاستكمال إنشاء حسابك، يرجى إضافة رقم هاتفك وتأكيده",
+        "phoneNumber": "رقم الهاتف",
+        "sendCode": "إرسال رمز التحقق",
+        "verifyTitle": "تحقق من رقم الهاتف",
+        "verifySubtitle": "أدخل الرمز المرسل إلى رقم هاتفك",
+        "completeRegistration": "تأكيد وإنهاء التسجيل",
+        "whyPhone": "لماذا نحتاج رقم هاتفك؟",
+        "securityReason": "تأمين حسابك بشكل إضافي",
+        "notificationsReason": "إشعارات الطلبات المهمة",
+        "loginReason": "تسجيل دخول سريع بالهاتف",
+        "deliveryReason": "تحديثات التوصيل",
+        "changePhone": "تغيير رقم الهاتف",
+        "requiredStep": "هذه الخطوة مطلوبة لتأمين حسابك وتحسين تجربة التسوق"
       }
     },
     "forgotPassword": {
@@ -373,8 +389,7 @@
     "sendVerificationCode": "إرسال رمز التحقق",
     "verifyCode": "تحقق من الرمز",
     "updatePassword": "تحديث كلمة المرور",
-    "updateEmail": "تحديث البريد الإلكتروني",
-    "deleteAccountPermanently": "حذف الحساب نهائياً",
+    "updateEmailAddress": "تحديث عنوان البريد الإلكتروني",
     "typeDeleteToConfirm": "اكتب DELETE للتأكيد",
     "passwordStrength": {
       "weak": "ضعيف",
@@ -402,7 +417,7 @@
     "startShopping": "ابدأ التسوق",
     "searchOrders": "البحث في الطلبات...",
     "allOrders": "جميع الطلبات",
-    "status": {
+    "statusOptions": {
       "pending": "في الانتظار",
       "processing": "قيد المعالجة",
       "shipped": "تم الشحن",

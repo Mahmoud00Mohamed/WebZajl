@@ -199,7 +199,7 @@ const LoginForm: React.FC = () => {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   className="w-full pl-10 rtl:pr-10 rtl:pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                  placeholder={isRtl ? "+966xxxxxxxxx" : "+966xxxxxxxxx"}
+                  placeholder={isRtl ? "+966501234567" : "+966501234567"}
                   required
                 />
               </div>

@@ -260,7 +260,7 @@
     "quickLinks": "Quick Links",
     "legal": "Legal",
     "contactUs": "Contact Us",
-    "location": "Riyadh,Saudi Arabia"
+    "location": "Riyadh, Saudi Arabia"
   },
   "delivery": {
     "locations": "Delivery Locations",
@@ -319,6 +319,22 @@
         "verify": "Verify Code",
         "resend": "Resend Code",
         "didntReceive": "Didn't receive the code?"
+      },
+      "phoneSetup": {
+        "title": "Add Your Phone Number",
+        "subtitle": "To complete your account setup, please add and verify your phone number",
+        "phoneNumber": "Phone Number",
+        "sendCode": "Send Verification Code",
+        "verifyTitle": "Verify Phone Number",
+        "verifySubtitle": "Enter the code sent to your phone number",
+        "completeRegistration": "Verify & Complete Registration",
+        "whyPhone": "Why do we need your phone?",
+        "securityReason": "Additional account security",
+        "notificationsReason": "Important order notifications",
+        "loginReason": "Quick phone login option",
+        "deliveryReason": "Delivery updates",
+        "changePhone": "Change Phone Number",
+        "requiredStep": "This step is required to secure your account and improve your shopping experience"
       }
     },
     "forgotPassword": {
@@ -373,7 +389,7 @@
     "sendVerificationCode": "Send Verification Code",
     "verifyCode": "Verify Code",
     "updatePassword": "Update Password",
-    "updateEmail": "Update Email",
+    "updateEmailAddress": "Update Email Address",
     "deleteAccountPermanently": "Delete Account Permanently",
     "typeDeleteToConfirm": "Type DELETE to confirm",
     "passwordStrength": {
@@ -402,7 +418,7 @@
     "startShopping": "Start Shopping",
     "searchOrders": "Search orders...",
     "allOrders": "All Orders",
-    "status": {
+    "statusOptions": {
       "pending": "Pending",
       "processing": "Processing",
       "shipped": "Shipped",

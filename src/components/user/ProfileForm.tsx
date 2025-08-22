@@ -253,7 +253,7 @@ const ProfileForm: React.FC = () => {
                   ? "border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   : "border-gray-200 bg-gray-50 cursor-not-allowed"
               }`}
-              placeholder={isRtl ? "+966xxxxxxxxx" : "+966xxxxxxxxx"}
+              placeholder={isRtl ? "+966501234567" : "+966501234567"}
             />
             {profile?.isPhoneVerified ? (
               <div className="flex items-center px-3 py-2 bg-green-100 text-green-800 rounded-xl">
