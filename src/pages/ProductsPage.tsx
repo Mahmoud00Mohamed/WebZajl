@@ -880,7 +880,7 @@ const ProductsPage: React.FC = () => {
                               variant="primary"
                               size="sm"
                               className="px-3 py-1.5 bg-purple-600 text-white rounded-lg shadow-md text-xs font-semibold hover:bg-purple-700 transition-colors"
-                              showLabel={true}
+                              showLabel={!isMobile}
                             />
                           </div>
                         </div>

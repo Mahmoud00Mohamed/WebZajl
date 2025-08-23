@@ -20,7 +20,7 @@ import DeleteAccountForm from "../../components/user/DeleteAccountForm";
 const ProfilePage: React.FC = () => {
   const { i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
-  const { profile, isLoading } = useUser();
+  const { profile } = useUser();
   const [activeTab, setActiveTab] = useState("profile");
 
   const tabs = [
@@ -65,19 +65,6 @@ const ProfilePage: React.FC = () => {
     };
     return colors[color as keyof typeof colors] || colors.purple;
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">
-            {isRtl ? "جاري التحميل..." : "Loading..."}
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 py-8">
