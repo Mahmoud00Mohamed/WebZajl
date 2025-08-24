@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import categories from "../../data/categories.json";
-import ProductImage from "../image/ProductImage";
-import { useImagePreloader } from "../../hooks/image/useImagePreloader";
+import ProductImage from "../ui/ProductImage";
+import { useImagePreloader } from "../../hooks/useImagePreloader";
 
 interface Category {
   id: string;

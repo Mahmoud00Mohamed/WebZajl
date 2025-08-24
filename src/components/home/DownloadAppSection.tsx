@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Smartphone, Apple } from "lucide-react";
-import ProductImage from "../image/ProductImage";
+import ProductImage from "../ui/ProductImage";
 
 const DownloadAppSection: React.FC = () => {
   const { t, i18n } = useTranslation();

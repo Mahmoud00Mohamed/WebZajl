@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import ProductImage from "../components/image/ProductImage";
+import ProductImage from "../components/ui/ProductImage";
 
 const AboutPage: React.FC = () => {
   const { i18n } = useTranslation();

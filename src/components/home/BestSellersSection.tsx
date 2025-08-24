@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft, Crown } from "lucide-react";
 import { getBestSellers } from "../../data";
-import ProductImage from "../image/ProductImage";
-import { useImagePreloader } from "../../hooks/image/useImagePreloader";
+import ProductImage from "../ui/ProductImage";
+import { useImagePreloader } from "../../hooks/useImagePreloader";
 
 const BestSellersSection: React.FC = () => {
   const { t, i18n } = useTranslation();

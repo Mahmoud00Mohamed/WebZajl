@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
 import { useCart } from "./CartContext";
-import ProductImage from "../components/image/ProductImage";
+import ProductImage from "../components/ui/ProductImage";
 
 const CartPage: React.FC = () => {
   const { t, i18n } = useTranslation();

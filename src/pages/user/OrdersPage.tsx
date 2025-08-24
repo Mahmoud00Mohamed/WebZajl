@@ -18,7 +18,6 @@ import {
   User,
 } from "lucide-react";
 import ProductImage from "../../components/ui/ProductImage";
-import ProductImage from "../../components/image/ProductImage";
 
 interface Order {
   id: string;

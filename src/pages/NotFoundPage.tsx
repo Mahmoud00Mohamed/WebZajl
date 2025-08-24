@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Home, Search } from "lucide-react";
-import ProductImage from "../components/image/ProductImage";
+import ProductImage from "../components/ui/ProductImage";
 
 const NotFoundPage: React.FC = () => {
   const { i18n } = useTranslation();
