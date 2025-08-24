@@ -1,9 +1,7 @@
-// src/components/home/BestSellersSection.tsx
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft, Crown } from "lucide-react";
-import { motion } from "framer-motion";
 import { getBestSellers } from "../../data";
 import ProductImage from "../ui/ProductImage";
 import { useImagePreloader } from "../../hooks/useImagePreloader";
@@ -12,109 +10,147 @@ const BestSellersSection: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const bestSellers = React.useMemo(() => getBestSellers(), []);
 
-  // Preload images for better UX
   const bestSellerImages = React.useMemo(
-    () => bestSellers.slice(0, 6).map((product) => product.imageUrl),
+    () => bestSellers.slice(0, 8).map((product) => product.imageUrl),
     [bestSellers]
   );
   useImagePreloader(bestSellerImages, { priority: true });
 
-  // تحسين التمرير للأجهزة المحمولة
-  const handleTouchScroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 280; // مسافة أكبر للأجهزة المحمولة
-      const targetScroll = isRtl
-        ? direction === "left"
-          ? scrollAmount
-          : -scrollAmount
-        : direction === "left"
-        ? -scrollAmount
-        : scrollAmount;
+  const handle3dScrollEffect = useCallback(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
 
+    if (window.innerWidth >= 768) {
+      (Array.from(scrollContainer.children) as HTMLElement[]).forEach(
+        (card) => {
+          card.style.transform = "";
+        }
+      );
+      return;
+    }
+
+    const containerViewportCenter =
+      scrollContainer.getBoundingClientRect().left +
+      scrollContainer.offsetWidth / 2;
+
+    (Array.from(scrollContainer.children) as HTMLElement[]).forEach((card) => {
+      const cardRect = card.getBoundingClientRect();
+      const cardCenter = cardRect.left + cardRect.width / 2;
+      const distance = cardCenter - containerViewportCenter;
+
+      const maxDistance = scrollContainer.offsetWidth / 2;
+      const ratio = Math.min(Math.max(distance / maxDistance, -1), 1);
+
+      const scale = 1 - Math.abs(ratio) * 0.35;
+      const rotateY = ratio * -35;
+
+      card.style.transform = `scale(${scale}) rotateY(${rotateY}deg)`;
+    });
+  }, []);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer && window.innerWidth < 768) {
+      const cardWidth = 160 + 12;
+      const middleIndex = Math.floor(bestSellers.length / 2);
+      const scrollPosition =
+        middleIndex * cardWidth -
+        scrollContainer.offsetWidth / 2 +
+        cardWidth / 2;
+      scrollContainer.scrollLeft = isRtl ? -scrollPosition : scrollPosition;
+    }
+  }, [isRtl, bestSellers.length]);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      handle3dScrollEffect();
+      scrollContainer.addEventListener("scroll", handle3dScrollEffect, {
+        passive: true,
+      });
+      window.addEventListener("resize", handle3dScrollEffect);
+    }
+
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener("scroll", handle3dScrollEffect);
+      }
+      window.removeEventListener("resize", handle3dScrollEffect);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handle3dScrollEffect]);
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const cardWidth = window.innerWidth >= 768 ? 192 + 8 : 160 + 12;
       scrollRef.current.scrollBy({
-        left: targetScroll,
+        left: isRtl
+          ? direction === "left"
+            ? cardWidth
+            : -cardWidth
+          : direction === "left"
+          ? -cardWidth
+          : cardWidth,
         behavior: "smooth",
       });
     }
   };
 
-  const scrollLeft = () => {
-    handleTouchScroll("left");
-  };
-
-  const scrollRight = () => {
-    handleTouchScroll("right");
-  };
+  const prevDirection = isRtl ? "right" : "left";
+  const nextDirection = isRtl ? "left" : "right";
 
   return (
-    <section className="py-16 bg-white">
-      <div className="container-custom">
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-3">
-            <Crown size={24} className="text-amber-300" />
-            <h2 className="section-title text-3xl font-serif text-gray-900 mb-0">
-              {t("home.bestSellers.title")}
-            </h2>
-          </div>
-          <div className="items-center gap-2 hidden md:flex">
-            <Link
-              to="/best-sellers"
-              className="view-more flex items-center text-primary hover:text-primary-dark font-medium text-lg transition-colors"
-            >
-              <span>{t("home.bestSellers.viewMore")}</span>
-              {isRtl ? (
-                <ChevronLeft size={18} className="ml-2" />
-              ) : (
-                <ChevronRight size={18} className="ml-2" />
-              )}
-            </Link>
-            <button
-              onClick={scrollLeft}
-              className="btn btn-secondary p-2 rounded-lg"
-              aria-label={isRtl ? "التمرير لليمين" : "Scroll left"}
-            >
-              {isRtl ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-            </button>
-            <button
-              onClick={scrollRight}
-              className="btn btn-secondary p-2 rounded-lg"
-              aria-label={isRtl ? "التمرير لليسار" : "Scroll right"}
-            >
-              {isRtl ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
-            </button>
-          </div>
-          <Link
-            to="/best-sellers"
-            className="view-more flex items-center text-primary hover:text-primary-dark font-medium text-lg md:hidden transition-colors"
-          >
-            <span>{t("home.bestSellers.viewMore")}</span>
-            {isRtl ? (
-              <ChevronLeft size={18} className="ml-2" />
-            ) : (
-              <ChevronRight size={18} className="ml-2" />
-            )}
-          </Link>
+    <section className="py-14 sm:py-18 bg-white">
+      <div className="container-custom px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-purple-800 leading-tight">
+            {t("home.bestSellers.title")}
+          </h2>
+          <p className="mt-2.5 text-sm sm:text-base max-w-xs sm:max-w-md md:max-w-lg mx-auto leading-relaxed">
+            {isRtl
+              ? "اكتشف أكثر منتجاتنا مبيعًا وشعبية."
+              : "Discover our most popular and best-selling products."}
+          </p>
         </div>
+
         <div className="relative">
+          <button
+            onClick={() => scroll(prevDirection)}
+            className="hidden md:flex items-center justify-center absolute top-[40%] -translate-y-1/2 bg-white/90 text-stone-600 rounded-full w-9 h-9 shadow ring-1 ring-stone-200 z-10 -left-8"
+            aria-label={t("common.scrollLeft")}
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <button
+            onClick={() => scroll(nextDirection)}
+            className="hidden md:flex items-center justify-center absolute top-[40%] -translate-y-1/2 bg-white/90 text-stone-600 rounded-full w-9 h-9 shadow ring-1 ring-stone-200 z-10 -right-8"
+            aria-label={t("common.scrollRight")}
+          >
+            <ChevronRight size={18} />
+          </button>
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto gap-x-2 pb-4 snap-x snap-mandatory scroll-smooth px-4"
+            className="flex overflow-x-auto gap-x-3 pb-4 snap-x snap-mandatory scroll-smooth px-[calc(50%-80px)] sm:px-[calc(50%-80px)] md:px-4 md:gap-x-2"
             style={{
+              perspective: "1000px",
               WebkitOverflowScrolling: "touch",
-              scrollbarWidth: "thin",
-              scrollbarColor: "#8A2BE2 transparent",
+              scrollbarWidth: isMobile ? "none" : "thin",
+              scrollbarColor: isMobile ? "transparent" : "#8A2BE2 transparent",
             }}
           >
             {bestSellers.map((product, index) => (
               <div
                 key={product.id}
-                className="flex-shrink-0 w-[calc(50%-4px)] sm:w-[calc(50%-4px)] md:w-56 h-60 md:h-72 snap-center touch-manipulation"
+                className="flex-shrink-0 w-40 sm:w-40 md:w-48 snap-center touch-manipulation"
               >
                 <Link to={`/product/${product.id}`}>
-                  <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden h-full flex flex-col">
-                    {/* Image Container */}
+                  <div className="bg-white rounded-xl border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all duration-300 overflow-hidden group h-[220px] md:h-[260px] flex flex-col">
                     <div className="relative aspect-square overflow-hidden rounded-t-xl">
                       <ProductImage
                         src={product.imageUrl}
@@ -124,43 +160,32 @@ const BestSellersSection: React.FC = () => {
                             : product.nameEn
                         }
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        width={224}
-                        height={224}
+                        width={160}
+                        height={160}
                         aspectRatio="square"
-                        sizes="(max-width: 640px) calc(50vw - 20px), (max-width: 768px) calc(50vw - 20px), 224px"
-                        quality={75}
-                        priority={index < 2}
+                        sizes="(max-width: 767px) 160px, 192px"
+                        quality={80}
+                        priority={index < 3}
                         showZoom={false}
-                        placeholderSize={32}
+                        placeholderSize={28}
                         fallbackSrc="https://images.pexels.com/photos/1058775/pexels-photo-1058775.jpeg?auto=compress&cs=tinysrgb&w=400"
                       />
-                      {/* Best Seller Badge - Positioned inside image area */}
-                      <div className="absolute top-3 left-3 rtl:right-3 rtl:left-auto z-10">
-                        <motion.div
-                          initial={{ scale: 0, rotate: -180 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          transition={{ delay: 0.2 + index * 0.1 }}
-                          className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold py-1.5 px-2.5 rounded-lg flex items-center gap-1 shadow-md"
-                        >
-                          <Crown size={10} />
+                      <div className="absolute top-2 left-2 rtl:right-2 rtl:left-auto z-10">
+                        <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white text-xs font-bold py-1 px-2 rounded-full flex items-center gap-1 shadow-sm">
+                          <Crown size={12} />
                           {t("home.bestSellers.bestSeller")}
-                        </motion.div>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Content (Title and Price) - Below the image */}
-                    <div className="p-3 text-start flex-grow flex flex-col justify-between">
-                      <h3 className="text-base font-semibold text-gray-900 line-clamp-1 md:line-clamp-2 mb-0">
+                    <div className="p-3 flex flex-col">
+                      <h3 className="text-sm font-semibold text-gray-800 line-clamp-1 overflow-hidden text-ellipsis whitespace-nowrap mb-1">
                         {i18n.language === "ar"
                           ? product.nameAr
                           : product.nameEn}
                       </h3>
-                      <div className="flex items-center justify-start">
-                        <p className="text-lg font-bold text-amber-600">
-                          {product.price}{" "}
-                          {i18n.language === "ar" ? "ر.س" : "SAR"}
-                        </p>
-                      </div>
+                      <p className="text-base font-bold text-purple-700">
+                        {product.price} {i18n.language === "ar" ? "ر.س" : "SAR"}
+                      </p>
                     </div>
                   </div>
                 </Link>

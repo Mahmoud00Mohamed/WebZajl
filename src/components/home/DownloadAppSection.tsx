@@ -1,24 +1,24 @@
-// src/components/home/DownloadAppSection.tsx
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Gift, Zap, Smartphone, Apple } from "lucide-react";
+import { Smartphone, Apple } from "lucide-react";
 import ProductImage from "../ui/ProductImage";
 
 const DownloadAppSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === "ar";
 
   const features = React.useMemo(
     () => [
       {
-        icon: <Gift size={24} className="text-primary" />,
+        icon: <Smartphone size={24} className="text-purple-600" />,
         text: t("home.downloadApp.features.feature1"),
       },
       {
-        icon: <Zap size={24} className="text-primary" />,
+        icon: <Smartphone size={24} className="text-purple-600" />,
         text: t("home.downloadApp.features.feature2"),
       },
       {
-        icon: <Smartphone size={24} className="text-primary" />,
+        icon: <Smartphone size={24} className="text-purple-600" />,
         text: t("home.downloadApp.features.feature3"),
       },
     ],
@@ -33,7 +33,8 @@ const DownloadAppSection: React.FC = () => {
         platform: t("home.downloadApp.iosPlatform"),
         label: t("home.downloadApp.downloadOn"),
         storeName: "App Store",
-        bgColor: "bg-gray-900 hover:bg-gray-800",
+        bgColor:
+          "bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900",
       },
       {
         href: "https://play.google.com/store",
@@ -49,69 +50,75 @@ const DownloadAppSection: React.FC = () => {
         platform: t("home.downloadApp.androidPlatform"),
         label: t("home.downloadApp.getItOn"),
         storeName: "Google Play",
-        bgColor: "bg-green-600 hover:bg-green-700",
+        bgColor:
+          "bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900",
       },
     ],
     [t]
   );
 
   return (
-    <section className="py-16 bg-white">
-      <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="text-center md:text-left">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              {t("home.downloadApp.title")}
-            </h2>
-            <p className="text-gray-600 mb-6 max-w-md mx-auto md:mx-0">
-              {t("home.downloadApp.description")}
-            </p>
+    <section className="py-14 sm:py-18 bg-white">
+      <div className="container-custom px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className={`${isRtl ? "lg:order-2" : "lg:order-1"}`}>
+            <div className="text-center lg:text-start mb-10">
+              <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-purple-800 leading-tight flex items-center justify-center lg:justify-start gap-3">
+                <Smartphone size={32} className="text-purple-700" />
+                {t("home.downloadApp.title")}
+              </h2>
+              <p className="mt-2.5 text-sm sm:text-base max-w-xs sm:max-w-md md:max-w-lg mx-auto lg:mx-0 leading-relaxed text-gray-600">
+                {t("home.downloadApp.description")}
+              </p>
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="flex flex-col items-center md:items-start group"
+                  className="flex items-start space-x-3 rtl:space-x-reverse bg-white rounded-xl border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-300 p-4"
                 >
-                  <div className="p-3 bg-blue-100 rounded-lg mb-2">
+                  <div className="flex-shrink-0 p-2 bg-purple-50 rounded-lg">
                     {feature.icon}
                   </div>
-                  <span className="text-gray-700 text-sm sm:text-base">
+                  <span className="text-gray-600 text-xs leading-relaxed">
                     {feature.text}
                   </span>
                 </div>
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               {downloadButtons.map((button, index) => (
                 <a
                   key={index}
                   href={button.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group flex items-center ${button.bgColor} text-white px-5 py-3 rounded-lg transition-all duration-300 shadow-md`}
+                  className={`group flex items-center ${button.bgColor} text-white px-5 py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105`}
                 >
                   <div className="mr-3 rtl:ml-3 rtl:mr-0">{button.icon}</div>
                   <div className="text-left rtl:text-right">
                     <div className="text-xs opacity-80">{button.label}</div>
-                    <div className="text-lg font-bold">{button.storeName}</div>
+                    <div className="text-base font-semibold">
+                      {button.storeName}
+                    </div>
                   </div>
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="flex justify-center relative">
-            <div className="relative max-w-xs">
-              <div className="absolute -inset-4 bg-primary/20 rounded-lg transform rotate-6"></div>
+          <div className={`${isRtl ? "lg:order-1" : "lg:order-2"} relative`}>
+            <div className="relative w-full aspect-square md:h-80 rounded-xl overflow-hidden">
+              <div className="absolute inset-0 border border-gray-200 rounded-xl shadow-lg z-10"></div>
               <ProductImage
                 src="https://images.pexels.com/photos/12759222/pexels-photo-12759222.jpeg?auto=compress&cs=tinysrgb&w=600"
                 alt={t("home.downloadApp.title")}
-                className="relative w-full h-auto rounded-lg shadow-md"
+                className="w-full h-full object-cover rounded-xl relative z-0"
                 width={300}
-                height={600}
-                aspectRatio="portrait"
+                height={300}
+                aspectRatio="square"
                 sizes="(max-width: 768px) 300px, 400px"
                 quality={90}
                 priority={false}
