@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
-import ProductImage from "../components/ui/ProductImage";
+import { ProductImage } from "../features/images";
 
 const FAQPage: React.FC = () => {
   const { i18n } = useTranslation();

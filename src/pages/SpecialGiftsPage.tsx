@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getSpecialGifts } from "../data";
-import ProductImage from "../components/ui/ProductImage";
+import { ProductImage } from "../features/images";
 import FavoriteButton from "../components/ui/FavoriteButton";
 import AddToCartButton from "../components/ui/AddToCartButton";
 

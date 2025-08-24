@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, getProductsByOccasion } from "../data";
 import occasions from "../data/occasions.json";
 import { useCart } from "../context/CartContext";
-import ProductImage from "../components/ui/ProductImage";
+import { ProductImage } from "../features/images";
 
 interface Product {
   id: number;

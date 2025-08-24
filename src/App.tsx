@@ -6,7 +6,7 @@ import { FavoritesProvider } from "./context/FavoritesContext";
 import { ToastProvider } from "./context/ToastContext";
 import { AuthProvider } from "./context/AuthContext";
 import { UserProvider } from "./context/UserContext";
-import { imageCache } from "./components/ui/ImageCache";
+import { imageCache } from "./features/images";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import BottomNavigation from "./components/layout/BottomNavigation";

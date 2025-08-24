@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MapPin, Truck, Clock } from "lucide-react";
-import ProductImage from "../components/ui/ProductImage";
+import { ProductImage } from "../features/images";
 
 const DeliveryPage: React.FC = () => {
   const { t, i18n } = useTranslation();

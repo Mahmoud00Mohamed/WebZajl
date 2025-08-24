@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft, Gift } from "lucide-react";
 import { getSpecialGifts } from "../../data";
-import ProductImage from "../ui/ProductImage";
-import { useImagePreloader } from "../../hooks/useImagePreloader";
+import { ProductImage } from "../../features/images";
+import { useImagePreloader } from "../../features/images";
 
 const FeaturedCollectionsSection: React.FC = () => {
   const { t, i18n } = useTranslation();

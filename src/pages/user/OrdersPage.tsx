@@ -17,7 +17,7 @@ import {
   Search,
   User,
 } from "lucide-react";
-import ProductImage from "../../components/ui/ProductImage";
+import { ProductImage } from "../../features/images";
 
 interface Order {
   id: string;

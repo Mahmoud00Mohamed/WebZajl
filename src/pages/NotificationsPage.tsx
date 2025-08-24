@@ -19,7 +19,7 @@ import {
   Smile,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import ProductImage from "../components/ui/ProductImage";
+import { ProductImage } from "../features/images";
 
 interface NotificationForm {
   recipientName: string;

@@ -8,8 +8,8 @@ import categories from "../data/categories.json";
 import { allProducts, getProductsByCategory } from "../data";
 import FavoriteButton from "../components/ui/FavoriteButton";
 import AddToCartButton from "../components/ui/AddToCartButton";
-import ProductImage from "../components/ui/ProductImage";
-import { useImagePreloader } from "../hooks/useImagePreloader";
+import { ProductImage } from "../features/images";
+import { useImagePreloader } from "../features/images";
 
 const CategoryPage: React.FC = () => {
   const { t, i18n } = useTranslation();

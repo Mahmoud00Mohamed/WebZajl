@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LogoPlaceholder from "./LogoPlaceholder";
-import { imageCache } from "./ImageCache";
+import { imageCache } from "../utils/ImageCache";
 
 interface EnhancedImageProps {
   src: string;
