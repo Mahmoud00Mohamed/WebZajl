@@ -17,8 +17,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { allProducts } from "../data/index";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
-import ProductImage from "../components/ui/ProductImage";
-import { useImagePreloader } from "../hooks/useImagePreloader";
+import ProductImage from "../components/image/ProductImage";
+import { useImagePreloader } from "../hooks/image/useImagePreloader";
 import AddToCartButton from "../components/ui/AddToCartButton";
 import FavoriteButton from "../components/ui/FavoriteButton";
 

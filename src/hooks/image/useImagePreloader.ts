@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { imageCache } from "../components/ui/ImageCache";
+import { imageCache } from "../../components/image/ImageCache";
 
 interface UseImagePreloaderOptions {
   enabled?: boolean;

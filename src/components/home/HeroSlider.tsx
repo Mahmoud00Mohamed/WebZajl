@@ -9,8 +9,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Confetti from "react-confetti";
-import EnhancedImage from "../ui/EnhancedImage";
-import { usePreloadCriticalImages } from "../../hooks/useImagePreloader";
+import EnhancedImage from "../image/EnhancedImage";
+import { usePreloadCriticalImages } from "../../hooks/image/useImagePreloader";
 import heroOccasions from "../../data/heroOccasions.json";
 import promotionalSlides from "../../data/promotionalSlides.json";
 

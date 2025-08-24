@@ -32,11 +32,11 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, getProductById } from "../data";
-import ProductImage from "../components/ui/ProductImage";
+import ProductImage from "../components/image/ProductImage";
 import {
   usePreloadCriticalImages,
   useImagePreloader,
-} from "../hooks/useImagePreloader";
+} from "../hooks/image/useImagePreloader";
 import FavoriteButton from "../components/ui/FavoriteButton";
 import AddToCartButton from "../components/ui/AddToCartButton";
 

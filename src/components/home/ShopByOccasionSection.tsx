@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import occasions from "../../data/occasions.json";
-import ProductImage from "../ui/ProductImage";
-import { useImagePreloader } from "../../hooks/useImagePreloader";
+import ProductImage from "../image/ProductImage";
+import { useImagePreloader } from "../../hooks/image/useImagePreloader";
 
 interface Occasion {
   id: string | number;
